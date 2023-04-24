@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from fastapi import FastAPI
 from game import *
 from fastapi.responses import HTMLResponse
+from fastapi.encoders import jsonable_encoder
 from treasure import *
 from energyCore import *
 GAME_NOT_RUNNING_ASSERTION_STRING="game is not running"
@@ -149,13 +152,41 @@ async def expandGame(timeInSecond: str):
     return SUCCESS_EXPAND_TIME_TEMPLATE.format(timeLimit = game.getTimeLimit(), timeExpand = timeInSecond)
 
 
-@app.get("/attack", response_class=HTMLResponse) # 8
+@app.get("/attack", response_class=HTMLResponse) # 9
 async def attack():
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
-    if game.getAttackChanceCount() == 0:
+    if game.getAttackChanceCount() == 0: # b
         return NO_MORE_ATTACK_CHANCE
-    elif game.getConnected:
-        
+    elif game.getConnectedEnergycore() == False: # c1
+        game.setAttackChanceCount(game.getAttackChanceCount() - 1)
+        reason="They are not fixing any energy core"
+        return FAILURE_ATTACK_TEMPLATE.format(reason=reason)
+    elif game.getFixingMode() == "shed": # c2
+        game.setAttackChanceCount(game.getAttackChanceCount() - 1)
+        reason="They are under the shed"
+        return FAILURE_ATTACK_TEMPLATE.format(reason=reason)
+    elif game.getConnectedEnergycore() != False and game.getFixingMode() == "nonshed": # c3
+        if game.getShieldCount() >= 1:
+            game.setShieldCount(game.getShieldCount() - 1)
+            reason="They used a shield"
+            return FAILURE_ATTACK_TEMPLATE.format(reason=reason)
+        else:
+            game.setShieldCount(game.getShieldCount() - 1)
+            game.setAttackState("attacked")
+            game.reduceTime(ATTACK_TIME)
+            return SUCCESS_ATTACK_TEMPLATE
+
+
+
+@app.get("/game/info") # 10
+async def getGameInfo(json:str):
+    return game.getInfo()
+
+@app.get("/dashboard") # 11
+async def showDashboard():
+    return dashboard.html
+
+
 
 def gameIsRunning():
     return game.isStarted() and (game.isEnded()==False)
