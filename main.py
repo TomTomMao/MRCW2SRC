@@ -134,7 +134,7 @@ async def showHint():
     return HINTS_TEMPLATE
 
 @app.get("/game/start/{difficulty}", response_class=HTMLResponse) # 7
-async def startGame():
+async def startGame(difficulty):
     assert difficulty in VALID_DIFFICULTY, "invalid difficulty :{difficulty}"
     game.initialise(difficulty=difficulty)
     return SNOW_MONSTER_INSTRUCTION_TEMPLATE
