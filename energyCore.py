@@ -10,5 +10,12 @@ ALREADY_CONNECTED_A_ENERGY_CORE_TEMPLATE = """<html><head><title>Invalid Connect
 ENERGY_CORE_ALREADY_FIXED_TEMPLATE =  """<html><head><title>Invalid Connect: Already fixed</title></head><body><p style="{colour: red}">The energy core (id:{id}) has already been fixed</p></body></html>""" 
 
 class Energycore:
-    def _init_(self):
-        pass
+    def _init_(self, id: str):
+        """
+            id: a string of numbers
+        """
+        for char in id:
+            if char not in "0123456789":
+                raise ValueError(f"Invalid Id {id}")
+        self.id = id
+    
