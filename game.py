@@ -6,6 +6,7 @@ from energyCore import Energycore
 from treasure import Treasure
 from quiz import Quiz
 
+
 def checkDigit(string: str):
     if len(string) == 0:
         return False
@@ -14,6 +15,7 @@ def checkDigit(string: str):
             return False
     else:
         return True
+
 
 def readQuiz(path="./quiz.csv"):
     """
@@ -25,8 +27,10 @@ def readQuiz(path="./quiz.csv"):
         csvreader = csv.reader(quizConfigFile, delimiter='\t')
         for row in csvreader:
             data.append(row)
-    config = [{data[0][0]: entry[0], data[0][1]: entry[1], data[0][2]: entry[2]} for entry in data[1:]]
+    config = [{data[0][0]: entry[0], data[0][1]: entry[1],
+               data[0][2]: entry[2]} for entry in data[1:]]
     return config
+
 
 HINTS_TEMPLATE = """
     <html>
@@ -80,19 +84,18 @@ try:
 except:
     print("error: fail to read quiz file")
 ENERGYCORE_COUNT = 7
-ENERGYCORE_CONFIG=[{'id':str(i)} for i in range(1,ENERGYCORE_COUNT)]
+ENERGYCORE_CONFIG = [{'id': str(i)} for i in range(1, ENERGYCORE_COUNT)]
 GAME_CONFIG = {
     'easy': {
-        'timeExpanderEffectInSeconds': 15, 
+        'timeExpanderEffectInSeconds': 15,
         'quizCount': 20,
         'attackTime': 15,
         # for random.choices()
         'treasure': {'types': ['shield', 'timeExpander', 'fixer'], 'weights': [6, 2, 2], 'count': 20},
         'timeLimit': timedelta(minutes=10),
-        'attackChanceCount': 15,
-        'quiz': []
+        'attackChanceCount': 15
     }, 'mid': {
-        'timeExpanderEffectInSeconds': 10, 
+        'timeExpanderEffectInSeconds': 10,
         'quizCount': 20,
         'attackTime': 20,
         # for random.choices()
@@ -101,7 +104,7 @@ GAME_CONFIG = {
         'timeLimit': timedelta(minutes=7.5),
         'attackChanceCount': 20
     }, 'hard': {
-        'timeExpanderEffectInSeconds': 5, 
+        'timeExpanderEffectInSeconds': 5,
         'quizCount': 20,
         'attackTime': 30,
         # for random.choices()
@@ -150,13 +153,16 @@ class Game:
         # initialise the treasure list
         treasureTypeList = [random.choices(
             GAME_CONFIG[self.gameDifficulty]['treasure']['types'], weights=GAME_CONFIG[self.gameDifficulty]['treasure']['weights'], k=GAME_CONFIG[self.gameDifficulty]['treasure']['count'])]
-        self.treasures = [Treasure(id=str(index), treasureType=_treasureType) for index, _treasureType in enumerate(treasureTypeList)]
+        self.treasures = [Treasure(id=str(index), treasureType=_treasureType)
+                          for index, _treasureType in enumerate(treasureTypeList)]
 
         # initialise the quizzes list
-        self.quizzes = [Quiz(id=quizConfig['id'], answer=quizConfig['answer'], mode=quizConfig['mode']) for quizConfig in QUIZ_CONFIG]
+        self.quizzes = [Quiz(id=quizConfig['id'], answer=quizConfig['answer'],
+                             mode=quizConfig['mode']) for quizConfig in QUIZ_CONFIG]
 
         # initialise the energycores list
-        self.energycores = [Energycore(id=energycoreConfig['id']) for energycoreConfig in ENERGYCORE_CONFIG]
+        self.energycores = [Energycore(id=energycoreConfig['id'])
+                            for energycoreConfig in ENERGYCORE_CONFIG]
 
         # initialize the startTime, endTime, and the timeLimit
         self.startTime = datetime.now()
@@ -187,11 +193,12 @@ class Game:
             Return None if there is no energy core connecting to the fixing tool
         """
         assert self.isStart(), "game must be started"
-        if self.connectedCore==None:
+        if self.connectedCore == None:
             return None
-        else: return self.connectedCore
+        else:
+            return self.connectedCore
 
-    def getTreasureById(self, treasureId: str) -> Union[Treasure, bool]:
+    def getTreasureById(self, treasureId: str) -> Union[Treasure, None]:
         """
             Assume game is started.
             treasureId: should be a string only contain number
@@ -200,14 +207,14 @@ class Game:
         """
         # check pre condition
         assert self.isStart(), "game must be started"
-        if (checkDigit(treasureId)==False):
+        if (checkDigit(treasureId) == False):
             raise ValueError('treasureId must only contain numbers "0" to "9"')
-            
+
         for treasure in self.treasures:
             if treasure.getId() == treasureId:
                 return treasure
         else:
-            return False
+            return None
 
     def getEnergycoreById(self, energycoreId) -> Union[Energycore, None]:
         """
@@ -217,15 +224,15 @@ class Game:
             Otherwise return None
         """
         assert self.isStart(), "game must be started"
-        if (checkDigit(energycoreId)==False):
-            raise ValueError('energycoreId must only contain numbers "0" to "9"')
-        
+        if (checkDigit(energycoreId) == False):
+            raise ValueError(
+                'energycoreId must only contain numbers "0" to "9"')
+
         for energycore in self.energycores:
             if energycore.getId() == energycoreId:
                 return energycore
         else:
             return None
-
 
     def getQuizById(self, quizId: str) -> Union[Quiz, None]:
         """
@@ -235,7 +242,7 @@ class Game:
             Otherwise, return None
         """
         assert self.isStart(), "game must be started"
-        if (checkDigit(quizId)==False):
+        if (checkDigit(quizId) == False):
             raise ValueError('quizId must only contain numbers "0" to "9"')
 
         for quiz in self.quizzes:
@@ -252,13 +259,13 @@ class Game:
             Return None if there is no connected energycore
         """
         assert self.isStart(), "game must be started"
-        if self.fixingMode == "shed": 
+        if self.fixingMode == "shed":
             return "shed"
         elif self.fixingMode == "nonshed":
             return "nonshed"
         else:
             return None
-        
+
     def getAttackState(self) -> str:
         """
             Assume game is started.
@@ -300,12 +307,11 @@ class Game:
         """
         assert self.isStart(), "game must be started"
         if newAttackChanceCount < 0:
-            raise ValueError('newAttackChanceCount must be an positive integer')
+            raise ValueError(
+                'newAttackChanceCount must be an positive integer')
         else:
-            self.attackChanceCount =  newAttackChanceCount
+            self.attackChanceCount = newAttackChanceCount
             return self.attackChanceCount
-        
-
 
     def getShieldCount(self) -> int:
         """
@@ -331,13 +337,18 @@ class Game:
             self.shieldCount = newShieldCount
             return self.shieldCount
 
+    def setFixingMode(self, mode:str):
+        """
+            mode: 
+        """
+
     def getRemainingTimeLimit(self) -> int:
         """
             Assume the game is started
             return the number of seconds of the remaining time of the game
         """
         assert self.isStart(), "game must be started"
-        
+
         if self.endTime >= datetime.now():
             delta: timedelta = self.endTime - datetime.now()
             return delta.seconds
@@ -345,16 +356,20 @@ class Game:
             delta: timedelta = datetime.now() - self.endTime
             return -delta.seconds
 
-    def reduceTime(self, timeToReduceInSecond: int) -> int:
+    def reduceTime(self, timeToReduceInSecond: int = -1) -> int:
         """
+            If timeToReduceInSecond = -1, use GAME_CONFIG[self.gameDifficulty]['attackTime']
             Assume the game is started
             timeToReduceInsecond: must be an positive integer
             Reduce the remaining time limit by timeToReduceInSecond
-            return the remaining time in seconds
+            Return the remaining time in seconds
         """
         assert self.isStart(), "game must be started"
+        if timeToReduceInSecond == -1:
+            timeToReduceInSecond = GAME_CONFIG[self.gameDifficulty]['attackTime']
         if timeToReduceInSecond <= 0:
-            raise ValueError("timeToReduceInSecond must be an postivie integer")
+            raise ValueError(
+                "timeToReduceInSecond must be an postivie integer")
         self.timeLimit = self.timeLimit - timeToReduceInSecond
         self.endTime = self.endTime - timedelta(seconds=timeToReduceInSecond)
         return self.getRemainingTimeLimit()
@@ -368,7 +383,8 @@ class Game:
         """
         assert self.isStart(), "game must be started"
         if timeToExpendInSecond <= 0:
-            raise ValueError("timeToExpendInSecond must be an postivie integer")
+            raise ValueError(
+                "timeToExpendInSecond must be an postivie integer")
         self.timeLimit = self.timeLimit + timeToExpendInSecond
         self.endTime = self.endTime + timedelta(seconds=timeToExpendInSecond)
         return self.getRemainingTimeLimit()
@@ -411,8 +427,12 @@ class Game:
         if treasure.getType() == "shield":
             return True
         if treasure.getType() == "fixer":
-            for energycore in energycores:
-                
+            # if there is unfixed energy core
+            # return true
+            # other wise false
+            for energycore in self.energycores:
+                if energycore.getState() == "unfixed":
+                    return True
             return False
 
     def isStart(self) -> bool:
@@ -432,12 +452,20 @@ class Game:
     def applyTreasure(self, treasure: Treasure) -> bool:
         """
             Assume the treasure can be applied
-            Apply the treasure
+            Apply the treasure effect. The state of treasure won't be changed in this method.
             Return True if success to apply
         """
-        assert self.isAvailableTreasure(treasure), "treasure should be suitable to be applied"
+        assert self.isAvailableTreasure(
+            treasure), "treasure should be suitable to be applied"
         if treasure.getType() == "timeExpander":
-        
-        if treasure.getType() == "shield":
-
-        if treasure.getType() == "fixer":
+            timeToExpandInSeconds = GAME_CONFIG[self.gameDifficulty]['timeExpanderEffectInSeconds']
+            self.expandTimeLimit(timeToExpandInSeconds)
+            return True
+        elif treasure.getType() == "shield":
+            timeToExpandInSeconds = GAME_CONFIG[self.gameDifficulty]['timeExpanderEffectInSeconds']
+            self.expandTimeLimit(timeToExpandInSeconds)
+            return True
+        elif treasure.getType() == "fixer":
+            timeToExpandInSeconds = GAME_CONFIG[self.gameDifficulty]['timeExpanderEffectInSeconds']
+            self.expandTimeLimit(timeToExpandInSeconds)
+            return True

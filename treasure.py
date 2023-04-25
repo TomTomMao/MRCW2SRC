@@ -31,6 +31,40 @@ MY_TREASURES_TEMPLATE_TAIL = """
 </html>
 """
 
+VALID_TREASURE_TYPE = ("timeExpander", "shield", "fixer")
+VALID_TREASURE_STATE = ("uncollected", "collected", "used")
+
 class Treasure:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, id: str, treasureType: str) -> None:
+        """
+            id: string, all the characters of id should be number
+            treasureType: must in VALID_TREASURE_TYPE
+        """
+        # check pre condition
+        for char in id:
+            if char not in "1234567890":
+                raise ValueError("id must be a string of number")
+        if treasureType not in VALID_TREASURE_TYPE:
+            raise ValueError(f"Invalid treasure type: treasure type shoud in {VALID_TREASURE_TYPE}")
+        assert treasureType in VALID_TREASURE_TYPE, f"treasure type is invalid: {treasureType}, should in {VALID_TREASURE_TYPE}"
+
+        self.id: str = id
+        self.treasureType: str = treasureType
+        self.state = "uncollected"
+
+    def getId(self) -> str:
+        return self.id
+
+    def getState(self) -> str:
+        return self.state
+
+    def getType(self) -> str:
+        return self.treasureType
+
+    def setState(self, state: str) -> None:
+        """
+            state: a string in VALID_TREASURE_TYPE
+        """
+        if state not in VALID_TREASURE_STATE:
+            raise ValueError(f"Invalid state: state should in {VALID_TREASURE_STATE}")
+        self.state = state
