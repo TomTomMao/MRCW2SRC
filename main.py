@@ -133,15 +133,15 @@ async def showHint():
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
     return HINTS_TEMPLATE
 
-@app.get("/game/start", response_class=HTMLResponse) # 7
-async def startGame(difficulty: str):
+@app.get("/game/start/{difficulty}", response_class=HTMLResponse) # 7
+async def startGame():
     assert difficulty in VALID_DIFFICULTY, "invalid difficulty :{difficulty}"
     game.initialise(difficulty=difficulty)
     return SNOW_MONSTER_INSTRUCTION_TEMPLATE
 
 @app.get("/game/expand/", response_class=HTMLResponse) # 8
 async def expandGame(timeInSecond: str):
-    assert game.isStarted(), "Game is not started! Can't expand"
+    assert game.isStart(), "Game is not started! Can't expand"
     all_number:bool = True
     for digit in timeInSecond:
         if digit not in "0123456789":

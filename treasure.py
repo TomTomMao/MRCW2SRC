@@ -30,3 +30,7 @@ MY_TREASURES_TEMPLATE_TAIL = """
     </body>
 </html>
 """
+
+class Treasure:
+    def __init__(self) -> None:
+        pass
