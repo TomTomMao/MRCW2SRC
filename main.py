@@ -22,7 +22,7 @@ async def rsp():
 async def useTreasure(treasureId):
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
     treasure = game.getTreasureById(treasureId)
-    if treasure == False: # b
+    if treasure == None: # b
         # treasure doesn't exist
         return TREASURE_NOT_EXIST_TEMPLATE.format(id=treasureId)
     elif treasure.getState() == "uncollected": # c
@@ -82,9 +82,9 @@ async def connectEnergyCore(energycoreId: str, mode: str):
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
     assert mode in VALID_FIXING_MODE, f"invalid mode: {mode}, mode should be one of: {str(VALID_FIXING_MODE)}"
     energycore = game.getEnergycoreById(energycoreId)
-    if energycore == False: # b
+    if energycore == None: # b
         return ENERGY_CORE_NOT_EXIST_TEMPLATE.template(id=energycore.getId())
-    elif game.getConnectedEnergycore() == False and energycore.getState()=="unfixed": # c
+    elif game.getConnectedEnergycore() == None and energycore.getState()=="unfixed": # c
         # connect energy core to the fixing tool
         game.connectEnergycore(energycore) 
         energycore.setState("fixing")
@@ -96,9 +96,9 @@ async def connectEnergyCore(energycoreId: str, mode: str):
             return ENERGY_CORE_CONNECT_SUCCESS_TEMPLATE_NONSHED.format(id=energycore.getId())
         else:
             return f"error: something went wrong, mode={mode}"
-    elif game.getConnectedEnergycore() != False: # d
+    elif game.getConnectedEnergycore() != None: # d
         return ALREADY_CONNECTED_A_ENERGY_CORE_TEMPLATE.format(id=game.getConnectedEnergycore().getId())
-    elif game.getConnectedEnergycore() == False and energycore.getState() == "fixed": # e
+    elif game.getConnectedEnergycore() == None and energycore.getState() == "fixed": # e
         return ENERGY_CORE_ALREADY_FIXED_TEMPLATE.format(id=energycore.getId())
     else:
         return "undefined branch"
@@ -106,13 +106,13 @@ async def connectEnergyCore(energycoreId: str, mode: str):
 @app.get("/quizzes/answer/", response_class=HTMLResponse) # 5
 async def connectEnergyCore(quizId: str, answer: str):
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
-    connectecEnergycore = game.getConnectedEnergycore()
+    connectectEnergycore = game.getConnectedEnergycore()
     quiz = game.getQuizById(quizId)
-    if connectecEnergycore != False: # b
+    if connectectEnergycore != None: # b
         return NO_CONNECTED_ENERGY_CORE_TEMPLATE
-    elif quiz == False: # c
+    elif quiz == None: # c
         return QUIZ_NOT_EXIST_TEMPLATE
-    elif quiz != False and quiz.getState() == "answered": # d
+    elif quiz != None and quiz.getState() == "answered": # d
         return QUIZ_ALREADY_ANSWERED_TEMPLATE
     elif quiz.getMode() != game.getFixingMode():# e
         return QUIZ_MODE_NOT_MATCH_TEMPLATE.format(quizMode = quiz.getMode(), fixingMode = game.getFixingMode())
@@ -122,11 +122,11 @@ async def connectEnergyCore(quizId: str, answer: str):
         if game.getAttackState() == "attacked": # snow monster manage to attack
             quiz.setState("answered")
             game.disconnectedEnergycore()
-            connectecEnergycore.setState("fixed")
+            connectectEnergycore.setState("fixed")
             game.setAttackState("notAttacked")
-            return renderSuccessAnswer(connectecEnergycore, game, attacked=True)
+            return renderSuccessAnswer(connectectEnergycore, game, attacked=True)
         elif game.getAttackState() == "notAttacked": # snow monster not manage to attack
-            return renderSuccessAnswer(connectecEnergycore, game, attacked=False)
+            return renderSuccessAnswer(connectectEnergycore, game, attacked=False)
 
 @app.get("/hints", response_class=HTMLResponse) # 6
 async def showHint():
@@ -149,7 +149,7 @@ async def expandGame(timeInSecond: str):
     assert all_number, "query argument timeInSecond should be a string only with numbers"
 
     game.expandTimeLimit(timeInSecond)
-    return SUCCESS_EXPAND_TIME_TEMPLATE.format(timeLimit = game.getTimeLimit(), timeExpand = timeInSecond)
+    return SUCCESS_EXPAND_TIME_TEMPLATE.format(timeLimit = game.getRemainingTimeLimit(), timeExpand = timeInSecond)
 
 
 @app.get("/attack", response_class=HTMLResponse) # 9
@@ -157,7 +157,7 @@ async def attack():
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
     if game.getAttackChanceCount() == 0: # b
         return NO_MORE_ATTACK_CHANCE
-    elif game.getConnectedEnergycore() == False: # c1
+    elif game.getConnectedEnergycore() == None: # c1
         game.setAttackChanceCount(game.getAttackChanceCount() - 1)
         reason="They are not fixing any energy core"
         return FAILURE_ATTACK_TEMPLATE.format(reason=reason)
@@ -165,7 +165,7 @@ async def attack():
         game.setAttackChanceCount(game.getAttackChanceCount() - 1)
         reason="They are under the shed"
         return FAILURE_ATTACK_TEMPLATE.format(reason=reason)
-    elif game.getConnectedEnergycore() != False and game.getFixingMode() == "nonshed": # c3
+    elif game.getConnectedEnergycore() != None and game.getFixingMode() == "nonshed": # c3
         if game.getShieldCount() >= 1:
             game.setShieldCount(game.getShieldCount() - 1)
             reason="They used a shield"
@@ -224,5 +224,5 @@ def renderSuccessAnswer(connectedEnergycore: Energycore, game: Game, attacked: b
             </html>
         """.format(energycoreId=connectedEnergycore.getId(), 
                    attacked=attackedPHTML,
-                   timeLimit=game.getTimeLimit(), 
+                   timeLimit=game.getRemainingTimeLimit(), 
                    cores=energycoresListHTML)
