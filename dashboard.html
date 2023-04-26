@@ -12,10 +12,13 @@
 <body>
     <div class="container text-center information col p-3  mt-4">
         <!-- reference: https://getbootstrap.com/docs/5.3/layout/grid/ -->
+        <div class="grid api-calls">
+            div
+        </div>
         <div class="row p-2 border" id="timeInfo">
-            <div class="col time text-warning" id="startTime">2023/4/26 11:40:00</div>
-            <div class="col time text-warning" id="endTime">2023/4/26 11:50:00</div>
-            <div class="col time text-warning" id="remainingTime">600</div>
+            <div class="col time" id="startTime">2023/4/26 11:40:00</div>
+            <div class="col time" id="endTime">2023/4/26 11:50:00</div>
+            <div class="col time" id="remainingTime">600</div>
             <script>
                 const remainingTime = document.getElementById("remainingTime")
                 setInterval(() => {
@@ -356,7 +359,22 @@
         </div>
     </div>
     <script>
-
+        async function loadGameJSONData() {
+            // reference: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+            const response = await fetch('game/info?json=1')
+            const gameJSONData = await response.json();
+            return gameJSONData
+        }
+        function renderData(data) {
+            console.log(data)
+        }
+        async function main() {
+            setInterval(async () => {
+                const data = await loadGameJSONData()
+                renderData(data)
+            }, 3000);
+        }
+        main()
     </script>
 </body>
 

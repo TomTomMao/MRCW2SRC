@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi import FastAPI
 from game import *
 from fastapi.responses import HTMLResponse
-from fastapi.encoders import jsonable_encoder
+from fastapi.responses import FileResponse
 from treasure import *
 from energyCore import *
 GAME_NOT_RUNNING_ASSERTION_STRING="game is not running"
@@ -187,12 +187,12 @@ async def getGameInfo(json:str):
 
 @app.get("/dashboard") # 11
 async def showDashboard():
-    return dashboard.html
+    return FileResponse('dashboard.html')
 
 
 
 def gameIsRunning():
-    return game.isStarted() and (game.isEnded()==False)
+    return game.isStart() and (game.isEnded()==False)
 
 def renderSuccessAnswer(connectedEnergycore: Energycore, game: Game, attacked: bool):
     """

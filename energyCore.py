@@ -31,3 +31,9 @@ class Energycore:
     def setState(self, newState: str) -> None:
         if newState not in VALID_ENERGY_CORE_STATE:
             raise ValueError(f"invalide newState: {newState}, should be in {VALID_ENERGY_CORE_STATE}") 
+
+    def toDictionary(self) -> dict:
+        """
+            Return a dictionary like this: {"id": "1", "state": "fixed"}
+        """
+        return {"id": self.getId(), "state": self.getState()}

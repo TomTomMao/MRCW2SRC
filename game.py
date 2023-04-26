@@ -22,9 +22,14 @@ def readQuiz(path="./quiz.csv"):
     """
         Return a list of dictionary like this: {"id":"1", "answer": "B", "mode": "shed"}
     """
+    # reference for relative path https://stackoverflow.com/questions/40416072/reading-a-file-using-a-relative-path-in-a-python-project
     import csv
+    from pathlib import Path
+    basePath = Path(__file__).parent
+    filePath = filePath = (basePath / path).resolve()
+    print(filePath)
     data = []
-    with open(path) as quizConfigFile:
+    with open(filePath) as quizConfigFile:
         csvreader = csv.reader(quizConfigFile, delimiter='\t')
         for row in csvreader:
             data.append(row)
@@ -82,8 +87,10 @@ VALID_WEATHER = ("rain", "notRain")
 # GAME CONFIGURE
 try:
     QUIZ_CONFIG = readQuiz("./quiz.csv")
-except:
+except Exception as e:
+    print(str(e))
     print("error: fail to read quiz file")
+
 ENERGYCORE_COUNT = 7
 ENERGYCORE_CONFIG = [{'id': str(i)} for i in range(1, ENERGYCORE_COUNT)]
 GAME_CONFIG = {
@@ -184,6 +191,7 @@ class Game:
             Assume game is started.
             Return a list of treasure object.
         """
+        assert self.isStart(), "game must be started"
         return self.treasures
 
     def getConnectedEnergycore(self) -> Union[Energycore, None]:
@@ -197,6 +205,14 @@ class Game:
             return None
         else:
             return self.connectedCore
+
+    def getEnergycores(self) -> list[Energycore]:
+        """
+            Assume game is started
+            Return a list of energycores of the game
+        """
+        assert self.isStart(), "game must be started"
+        return self.energycores
 
     def getTreasureById(self, treasureId: str) -> Union[Treasure, None]:
         """
@@ -346,20 +362,34 @@ class Game:
         else:
             self.fixingMode = mode
 
-    def getInfo(self) -> str:
+    def getInfoJSON(self) -> str:
         """
             Return a json used by dashboard.html
+            If game starts, return a detailed data
+            If game not starts, return a data showing that.
         """
+        
+        if self.isStart() == False:
+            print(json.dumps({"isGameStarted": "False"}))
+            return json.dumps({"isGameStarted": "False"})
+
         treasureObjects = self.getTreasures()
         treasuresDict = [treasure.toDictionary() for treasure in treasureObjects] #  a list of dictionary
+        
         data = {
             "treasures": treasuresDict,
             "energycores": [energycore.toDictionary() for energycore in self.energycores],
             "quizzes": [quiz.toDictionary() for quiz in self.quizzes],
-            
+            "isGameStarted": self.isGameStarted,
             "startTime": self.startTime,
             "endTime": self.endTime,
             "remainingTime": self.getRemainingTimeLimit(),
+            "shieldCount": self.getShieldCount(),
+            "fixingMode": self.getFixingMode(),
+            "gameDifficulty": self.gameDifficulty,
+            "attackChanceCount": self.getAttackChanceCount(),
+            "connectedCore": self.getConnectedEnergycore(),
+            "attackState": self.getAttackState()
             }
         return json.dumps(data, indent = 4)
 
@@ -502,3 +532,5 @@ class Game:
         elif treasure.getType() == "timeExpanderBomb":
             # implement it later
             return True
+        else:
+            return False
