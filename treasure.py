@@ -31,7 +31,7 @@ MY_TREASURES_TEMPLATE_TAIL = """
 </html>
 """
 
-VALID_TREASURE_TYPE = ("timeExpander", "shield", "fixer")
+VALID_TREASURE_TYPE = ("timeExpander", "shield", "fixer", "timeExpanderBomb")
 VALID_TREASURE_STATE = ("uncollected", "collected", "used")
 
 class Treasure:
@@ -68,3 +68,9 @@ class Treasure:
         if state not in VALID_TREASURE_STATE:
             raise ValueError(f"Invalid state: state should in {VALID_TREASURE_STATE}")
         self.state = state
+    
+    def toDictionary(self) -> dict:
+        """
+            Return a dictionary like: {"id":"1", "state": "uncollected", "type": "timeExpander"}
+        """
+        return {"id":self.getId(), "state": self.getState(), "type": self.getType()}

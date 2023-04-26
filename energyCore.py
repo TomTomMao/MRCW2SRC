@@ -9,8 +9,10 @@ ENERGY_CORE_CONNECT_SUCCESS_TEMPLATE_NONSHED = """<html><head><title>Energy core
 ALREADY_CONNECTED_A_ENERGY_CORE_TEMPLATE = """<html><head><title>Invalid Connect: Already Connect</title></head><body><p style="{colour: red}">The fixing tool has already connected to the energy core (id:{id})</p></body></html>""" 
 ENERGY_CORE_ALREADY_FIXED_TEMPLATE =  """<html><head><title>Invalid Connect: Already fixed</title></head><body><p style="{colour: red}">The energy core (id:{id}) has already been fixed</p></body></html>""" 
 
+
+VALID_ENERGY_CORE_STATE = ("fixed", "unfixed", "fixing")
 class Energycore:
-    def _init_(self, id: str):
+    def __init__(self, id: str):
         """
             id: a string of numbers
         """
@@ -18,4 +20,14 @@ class Energycore:
             if char not in "0123456789":
                 raise ValueError(f"Invalid Id {id}")
         self.id = id
+        self.state = "unfixed"
     
+    def getId(self) -> str:
+        return self.id
+    
+    def getState(self) -> str:
+        return self.state
+
+    def setState(self, newState: str) -> None:
+        if newState not in VALID_ENERGY_CORE_STATE:
+            raise ValueError(f"invalide newState: {newState}, should be in {VALID_ENERGY_CORE_STATE}") 

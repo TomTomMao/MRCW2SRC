@@ -81,10 +81,11 @@ async def showTreasures():
 async def connectEnergyCore(energycoreId: str, mode: str):
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
     assert mode in VALID_FIXING_MODE, f"invalid mode: {mode}, mode should be one of: {str(VALID_FIXING_MODE)}"
-    energycore = game.getEnergycoreById(energycoreId)
+    energycore: Union[Energycore, None] = game.getEnergycoreById(energycoreId)
+    connectedEnergyCore: Union[Energycore, None] = game.getConnectedEnergycore()
     if energycore == None: # b
-        return ENERGY_CORE_NOT_EXIST_TEMPLATE.format(id=energycore.getId())
-    elif game.getConnectedEnergycore() == None and energycore.getState()=="unfixed": # c
+        return ENERGY_CORE_NOT_EXIST_TEMPLATE.format(id=energycoreId)
+    elif connectedEnergyCore == None and energycore.getState()=="unfixed": # c
         # connect energy core to the fixing tool
         game.connectEnergycore(energycore) 
         energycore.setState("fixing")
@@ -96,9 +97,9 @@ async def connectEnergyCore(energycoreId: str, mode: str):
             return ENERGY_CORE_CONNECT_SUCCESS_TEMPLATE_NONSHED.format(id=energycore.getId())
         else:
             return f"error: something went wrong, mode={mode}"
-    elif game.getConnectedEnergycore() != None: # d
-        return ALREADY_CONNECTED_A_ENERGY_CORE_TEMPLATE.format(id=game.getConnectedEnergycore().getId())
-    elif game.getConnectedEnergycore() == None and energycore.getState() == "fixed": # e
+    elif connectedEnergyCore != None: # d
+        return ALREADY_CONNECTED_A_ENERGY_CORE_TEMPLATE.format(id=connectedEnergyCore.getId())
+    elif connectedEnergyCore == None and energycore.getState() == "fixed": # e
         return ENERGY_CORE_ALREADY_FIXED_TEMPLATE.format(id=energycore.getId())
     else:
         return "undefined branch"
@@ -106,9 +107,9 @@ async def connectEnergyCore(energycoreId: str, mode: str):
 @app.get("/quizzes/answer/", response_class=HTMLResponse) # 5
 async def answerQuiz(quizId: str, answer: str):
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
-    connectedEnergycore = game.getConnectedEnergycore()
+    connectedEnergycore: Union[Energycore, None] = game.getConnectedEnergycore()
     quiz = game.getQuizById(quizId)
-    if connectedEnergycore != None: # b
+    if connectedEnergycore == None: # b
         return NO_CONNECTED_ENERGY_CORE_TEMPLATE
     elif quiz == None: # c
         return QUIZ_NOT_EXIST_TEMPLATE
@@ -148,7 +149,7 @@ async def expandGame(timeInSecond: str):
             all_number = False
     assert all_number, "query argument timeInSecond should be a string only with numbers"
 
-    game.expandTimeLimit(timeInSecond)
+    game.expandTimeLimit(int(timeInSecond))
     return SUCCESS_EXPAND_TIME_TEMPLATE.format(timeLimit = game.getRemainingTimeLimit(), timeExpand = timeInSecond)
 
 
@@ -182,7 +183,7 @@ async def attack():
 
 @app.get("/game/info") # 10
 async def getGameInfo(json:str):
-    return game.getInfo()
+    return game.getInfoJSON()
 
 @app.get("/dashboard") # 11
 async def showDashboard():

@@ -3,8 +3,9 @@ from datetime import datetime
 from datetime import timedelta
 import random
 from energyCore import Energycore
-from treasure import Treasure
+from treasure import Treasure, VALID_TREASURE_TYPE
 from quiz import Quiz
+import json
 
 
 def checkDigit(string: str):
@@ -114,7 +115,6 @@ GAME_CONFIG = {
     }
 }
 
-
 class Game:
     def __init__(self) -> None:
         self.treasures: list[Treasure]
@@ -152,7 +152,7 @@ class Game:
 
         # initialise the treasure list
         treasureTypeList = [random.choices(
-            GAME_CONFIG[self.gameDifficulty]['treasure']['types'], weights=GAME_CONFIG[self.gameDifficulty]['treasure']['weights'], k=GAME_CONFIG[self.gameDifficulty]['treasure']['count'])]
+            GAME_CONFIG[self.gameDifficulty]['treasure']['types'], weights=GAME_CONFIG[self.gameDifficulty]['treasure']['weights'], k=GAME_CONFIG[self.gameDifficulty]['treasure']['count'])][0]
         self.treasures = [Treasure(id=str(index), treasureType=_treasureType)
                           for index, _treasureType in enumerate(treasureTypeList)]
 
@@ -337,10 +337,32 @@ class Game:
             self.shieldCount = newShieldCount
             return self.shieldCount
 
-    def setFixingMode(self, mode:str):
+    def setFixingMode(self, mode:str) :
         """
-            mode: 
+            mode: nonshed, shed, inactive. 
         """
+        if mode not in VALID_FIXING_MODE:
+            raise ValueError(f"Invalid mode: {mode}, it must in {VALID_FIXING_MODE}")
+        else:
+            self.fixingMode = mode
+
+    def getInfo(self) -> str:
+        """
+            Return a json used by dashboard.html
+        """
+        treasureObjects = self.getTreasures()
+        treasuresDict = [treasure.toDictionary() for treasure in treasureObjects] #  a list of dictionary
+        data = {
+            "treasures": treasuresDict,
+            "energycores": [energycore.toDictionary() for energycore in self.energycores],
+            "quizzes": [quiz.toDictionary() for quiz in self.quizzes],
+            
+            "startTime": self.startTime,
+            "endTime": self.endTime,
+            "remainingTime": self.getRemainingTimeLimit(),
+            }
+        return json.dumps(data, indent = 4)
+
 
     def getRemainingTimeLimit(self) -> int:
         """
@@ -417,11 +439,13 @@ class Game:
         """
             Assume the treasure object is part of self.
             Assume the treasure state is collected
+            Assume the treusure is in VALID_TREASURE_TYPE
             If the game is suitable to apply the treasure, return True
             If the game is not suitable to apply the treasure, return False.
         """
         assert treasure in self.getTreasures(), "treasure must be part of the game"
         assert treasure.getState() != "collected", "treasure must be collected"
+        assert treasure.getType() in VALID_TREASURE_TYPE, f"treasure has a wrong type:{treasure.getType()}"
         if treasure.getType() == "timeExpander":
             return True
         if treasure.getType() == "shield":
@@ -434,6 +458,10 @@ class Game:
                 if energycore.getState() == "unfixed":
                     return True
             return False
+        if treasure.getType() == "timeExpanderBomb":
+            return True
+        else:
+            raise AssertionError(f"treasure type is invalid:{treasure.getType()}")
 
     def isStart(self) -> bool:
         """
@@ -452,11 +480,13 @@ class Game:
     def applyTreasure(self, treasure: Treasure) -> bool:
         """
             Assume the treasure can be applied
+            Assume the treusure is in VALID_TREASURE_TYPE
             Apply the treasure effect. The state of treasure won't be changed in this method.
             Return True if success to apply
         """
         assert self.isAvailableTreasure(
             treasure), "treasure should be suitable to be applied"
+        assert treasure.getType() in VALID_TREASURE_TYPE, f"treasure has a wrong type:{treasure.getType()}"
         if treasure.getType() == "timeExpander":
             timeToExpandInSeconds = GAME_CONFIG[self.gameDifficulty]['timeExpanderEffectInSeconds']
             self.expandTimeLimit(timeToExpandInSeconds)
@@ -468,4 +498,7 @@ class Game:
         elif treasure.getType() == "fixer":
             timeToExpandInSeconds = GAME_CONFIG[self.gameDifficulty]['timeExpanderEffectInSeconds']
             self.expandTimeLimit(timeToExpandInSeconds)
+            return True
+        elif treasure.getType() == "timeExpanderBomb":
+            # implement it later
             return True
