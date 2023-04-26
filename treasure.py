@@ -12,8 +12,8 @@ TREASURE_ALREADY_USED_TEMPLATE = """<html>
     <p>You can not use this treasure, because it has already been used.</p>
     </body>
 </html>"""
-TREASURE_COLLECT_SUCCESS_TEMPLATE = """<html><head><title>Treasure collect success</title></head><body><p>You collected a {treasureType}, you can use it in <a href="/treasures/">you treasures</a>/p></body></html>"""
-TREASURE_UNABLE_COLLECT_TEMPLATE = """<html><head><title>ALREADY COLLECTED</title></head><body><p>This treasue (id={id}) has already be collected or used, so you can't collect this one./p></body></html>"""
+TREASURE_COLLECT_SUCCESS_TEMPLATE = """<html><head><title>Treasure collect success</title></head><body><p>You collected a {treasureType}, you can use it in <a href="/treasures/my">you treasures</a></p></body></html>"""
+TREASURE_UNABLE_COLLECT_TEMPLATE = """<html><head><title>ALREADY COLLECTED</title></head><body><p>This treasue (id={id}) has already be collected or used, so you can't collect this one.</p></body></html>"""
 MY_TREASURES_TEMPLATE_HEAD = """<html>
     <head>
         <title>
@@ -24,7 +24,8 @@ MY_TREASURES_TEMPLATE_HEAD = """<html>
         <h1>My treasures</h1>
         <ul>
     """
-MY_TREASURE_ITEM_TEMPLATE = """<li><span>{treasureType}</span><a href="/treasure/use/{id}">use</a></li>"""
+MY_COLLECTED_TREASURE_ITEM_TEMPLATE = """<li><span>{treasureType}</span><span>id={id}</span><a href="/treasures/use/{id}">use</a></li>"""
+MY_USED_TREASURE_ITEM_TEMPLATE = """<li><span>{treasureType}</span><span>id={id}</span><p>used</p></li>"""
 MY_TREASURES_TEMPLATE_TAIL = """
     </ul>
     </body>

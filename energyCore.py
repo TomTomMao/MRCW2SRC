@@ -6,8 +6,8 @@ ENERGY_CORE_CONNECT_SUCCESS_TEMPLATE_NONSHED = """<html><head><title>Energy core
 <p>You should answer the question on the table out of the blue shed, by scanning the artcode of the correct answer.</p>
 <p style="{colour: red}">Be careful. The snow monster might attack you. If you get attacked, the time limit would be reduced!!</p>
 <p>Open your artCode app and scan it!</p></body></html>""" 
-ALREADY_CONNECTED_A_ENERGY_CORE_TEMPLATE = """<html><head><title>Invalid Connect: Already Connect</title></head><body><p style="{colour: red}">The fixing tool has already connected to the energy core (id:{id})</p></body></html>""" 
-ENERGY_CORE_ALREADY_FIXED_TEMPLATE =  """<html><head><title>Invalid Connect: Already fixed</title></head><body><p style="{colour: red}">The energy core (id:{id}) has already been fixed</p></body></html>""" 
+ALREADY_CONNECTED_A_ENERGY_CORE_TEMPLATE = """<html><head><title>Invalid Connect: Already Connect</title></head><body><p>The fixing tool has already connected to the energy core (id:{id})</p></body></html>""" 
+ENERGY_CORE_ALREADY_FIXED_TEMPLATE =  """<html><head><title>Invalid Connect: Already fixed</title></head><body><p>The energy core (id:{id}) has already been fixed</p></body></html>""" 
 
 
 VALID_ENERGY_CORE_STATE = ("fixed", "unfixed", "fixing")
@@ -31,7 +31,7 @@ class Energycore:
     def setState(self, newState: str) -> None:
         if newState not in VALID_ENERGY_CORE_STATE:
             raise ValueError(f"invalide newState: {newState}, should be in {VALID_ENERGY_CORE_STATE}") 
-
+        self.state = newState
     def toDictionary(self) -> dict:
         """
             Return a dictionary like this: {"id": "1", "state": "fixed"}

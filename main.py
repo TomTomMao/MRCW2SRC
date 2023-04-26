@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.responses import FileResponse
 from treasure import *
 from energyCore import *
+from htmlTemplate import *
 GAME_NOT_RUNNING_ASSERTION_STRING="game is not running"
 
 app = FastAPI()
@@ -74,7 +75,10 @@ async def showTreasures():
     page = MY_TREASURES_TEMPLATE_HEAD
     treasures = game.getTreasures()
     for treasure in treasures:
-        page += MY_TREASURE_ITEM_TEMPLATE.format(id=treasure.getId(), treasureType=treasure.getType())
+        if treasure.getState() == "collected":
+            page += MY_COLLECTED_TREASURE_ITEM_TEMPLATE.format(id=treasure.getId(), treasureType=treasure.getType())
+        elif treasure.getState() == "used":
+            page += MY_USED_TREASURE_ITEM_TEMPLATE.format(id=treasure.getId(), treasureType=treasure.getType())
     return page + MY_TREASURES_TEMPLATE_TAIL
 
 @app.get("/energycores/connect/", response_class=HTMLResponse) # 4
@@ -84,11 +88,14 @@ async def connectEnergyCore(energycoreId: str, mode: str):
     energycore: Union[Energycore, None] = game.getEnergycoreById(energycoreId)
     connectedEnergyCore: Union[Energycore, None] = game.getConnectedEnergycore()
     if energycore == None: # b
+        print("flag1")
         return ENERGY_CORE_NOT_EXIST_TEMPLATE.format(id=energycoreId)
     elif connectedEnergyCore == None and energycore.getState()=="unfixed": # c
+        print("flag2")
         # connect energy core to the fixing tool
         game.connectEnergycore(energycore) 
         energycore.setState("fixing")
+        print(energycore.toDictionary())
         # set the fixing mode
         game.setFixingMode(mode)
         if mode=="shed":
@@ -98,10 +105,13 @@ async def connectEnergyCore(energycoreId: str, mode: str):
         else:
             return f"error: something went wrong, mode={mode}"
     elif connectedEnergyCore != None: # d
+        print("flag3")
         return ALREADY_CONNECTED_A_ENERGY_CORE_TEMPLATE.format(id=connectedEnergyCore.getId())
     elif connectedEnergyCore == None and energycore.getState() == "fixed": # e
+        print("flag4")
         return ENERGY_CORE_ALREADY_FIXED_TEMPLATE.format(id=energycore.getId())
     else:
+        print("flag5")
         return "undefined branch"
 
 @app.get("/quizzes/answer/", response_class=HTMLResponse) # 5
@@ -120,11 +130,11 @@ async def answerQuiz(quizId: str, answer: str):
     elif quiz.getAnswer() != answer: # f
         return QUIZ_WRONG_ANSWER_TEMPLATE
     else: # g : energycore connected, valid quiz, correct answer
+        quiz.setState("answered")
+        game.disconnectedEnergycore()
+        connectedEnergycore.setState("fixed")
+        game.setAttackState("notAttacked")
         if game.getAttackState() == "attacked": # snow monster manage to attack
-            quiz.setState("answered")
-            game.disconnectedEnergycore()
-            connectedEnergycore.setState("fixed")
-            game.setAttackState("notAttacked")
             return renderSuccessAnswer(connectedEnergycore, game, attacked=True)
         elif game.getAttackState() == "notAttacked": # snow monster not manage to attack
             return renderSuccessAnswer(connectedEnergycore, game, attacked=False)
@@ -157,7 +167,7 @@ async def expandGame(timeInSecond: str):
 async def attack():
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
     if game.getAttackChanceCount() == 0: # b
-        return NO_MORE_ATTACK_CHANCE
+        return FAILURE_ATTACK_TEMPLATE.format(reason="You don't have any attack chance")
     elif game.getConnectedEnergycore() == None: # c1
         game.setAttackChanceCount(game.getAttackChanceCount() - 1)
         reason="They are not fixing any energy core"

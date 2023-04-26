@@ -15,39 +15,21 @@
         <div class="grid api-calls">
             <!-- reference for buttons: https://getbootstrap.com/docs/5.3/components/buttons/ -->
             <div class="row">
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-            </div>
-            <div class="row">
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-            </div>
-            <div class="row">
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-            </div>
-            <div class="row">
-                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
-                <div class="col"><a role="button" class="btn btn-primary m-1">expand time</a></div>
                 <div class="col"><a href="game/start/easy" target="_blank" role="button"
-                        class="btn btn-primary m-1">start game</a></div>
+                        class="btn btn-primary m-1">start game (easy)</a></div>
+                <div class="col"><a href="game/start/mid" target="_blank" role="button"
+                        class="btn btn-primary m-1">start game (mid)</a></div>
+                <div class="col"><a href="game/start/hard" target="_blank" role="button"
+                        class="btn btn-primary m-1">start game (hard)</a></div>
             </div>
         </div>
         <div class="row p-2 border" id="timeInfo">
             <div class="col time" id="startTime">2023/4/26 11:40:00</div>
             <div class="col time" id="endTime">2023/4/26 11:50:00</div>
-            <div class="col time" id="remainingTime">600</div>
-            <script>
-                const remainingTime = document.getElementById("remainingTime")
-                setInterval(() => {
-                    remainingTime.innerText = parseInt(remainingTime.innerText) - 1
-                }, 1000);
-            </script>
+            <div class="col time"><span id="remainingTimeTitle">Remaining Time:</span><span id="remainingTime"></span></div>
             <div class="col">
-                <button type="button" class="btn btn-primary">Base class</button>
+                <a href="game/expand?timeInSecond=60" target="_blank" role="button" class="btn btn-primary m-1">expand
+                    time</a>
                 <!-- button referencehttps://getbootstrap.com/docs/5.3/components/buttons/ -->
             </div>
         </div>
@@ -63,7 +45,7 @@
                                 <th scope="col">state</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="energycoreInfoTbody">
                             <tr class="d-none" id="energycore-tr-template">
                                 <th class="energycore-th" scope="row">1</th>
                                 <td></td>
@@ -72,7 +54,12 @@
                     </table>
                 </div>
                 <div class="row info" id="treasureInfo">
-                    <h2>treasure</h2>
+                    <div class="col">
+                        <h2>treasure</h2>
+                    </div>
+                    <div class="col"><a href="treasures/my" target="_blank" role="button"
+                            class="btn btn-primary m-1">show player treasures</a></div>
+
                     <table class="table infotable" id="treasureInfoTable">
                         <!-- https://getbootstrap.com/docs/5.3/content/tables/ -->
                         <thead id="treasureInfoThead">
@@ -82,12 +69,28 @@
                                 <th scope="col">type</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="treasureInfoTbody">
                             <tr class="d-none" id="treasure-tr-template">
                                 <th class="treasure-th" scope="row">1</th>
                                 <td></td>
                                 <td></td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row info" id="quizInfo">
+                    <h2>quiz</h2>
+                    <table class="table infotable" id="quizInfoTable">
+                        <!-- https://getbootstrap.com/docs/5.3/content/tables/ -->
+                        <thead id="quizInfoThead">
+                            <tr>
+                                <th scope="col">id</th>
+                                <th scope="col">answer</th>
+                                <th scope="col">mode</th>
+                                <th scope="col">state</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quizInfoTbody">
                         </tbody>
                     </table>
                 </div>
@@ -102,39 +105,78 @@
             const gameJSONData = await response.json();
             return JSON.parse(gameJSONData)
         }
-        function renderEnergycores(energycoresData) {
-            const thead = document.getElementById("energycoreInfoThead");
-            thead.innerHTML=""
+        function renderEnergycores(energycoresData, connectedEnergyCore) {
+            const tbody = document.getElementById("energycoreInfoTbody");
+            tbody.innerHTML = ""
             energycoresData.forEach(energycore => {
                 let tr = document.createElement("tr");
-                tr.className="";
-                tr.id=`energycore-tr-${energycore.id}`;
-                tr.innerHTML=`<th class="energycore-th" scope="row">${energycore.id}</th><td>${energycore.state}</td>`;
-                thead.appendChild(tr);
+                tr.className = "";
+                tr.id = `energycore-tr-${energycore.id}`;
+
+                collectButtonShed = `<td><a href="energycores/connect/?energycoreId=${energycore.id}&mode=shed" target="_blank" role="button"
+                                class="btn btn-primary m-1">connect (shed)</a></td>`
+                collectButtonNonShed = `<td><a href="energycores/connect/?energycoreId=${energycore.id}&mode=nonshed" target="_blank" role="button"
+                                class="btn btn-primary m-1">connect (nonshed)</a></td>`
+                tr.innerHTML = `<th class="energycore-th" scope="row">${energycore.id}</th><td>${energycore.state}</td>
+                    ${collectButtonShed}${collectButtonNonShed}`;
+                tbody.appendChild(tr);
             });
         }
         function renderTreasures(treasuresData) {
-            const thead = document.getElementById("treasureInfoThead");
-            thead.innerHTML=""
+            const tbody = document.getElementById("treasureInfoTbody");
+            tbody.innerHTML = ""
             treasuresData.forEach(treasure => {
                 let tr = document.createElement("tr");
-                tr.className="";
-                tr.id=`treasure-tr-${treasure.id}`;
-                tr.innerHTML=`<th class="treasure-th" scope="row">${treasure.id}</th><td>${treasure.state}</td><td>${treasure.type}</td>`;
-                thead.appendChild(tr);
+                tr.className = "";
+                tr.id = `treasure-tr-${treasure.id}`;
+                treasureCollectButton = `<td><a href="treasures/collect/${treasure.id}" target="_blank" role="button"
+                                class="btn btn-primary m-1">collect treasure</a></td>`
+                treasrueUseButton = `<td><a href="treasures/use/${treasure.id}" target="_blank" role="button"
+                                class="btn btn-primary m-1">use treasure</a></td>`
+                tr.innerHTML = `<th class="treasure-th" scope="row">${treasure.id}</th><td>${treasure.state}</td><td>${treasure.type}</td>${treasureCollectButton}${treasrueUseButton}`;
+                tbody.appendChild(tr);
             });
         }
+        function renderQuizzes(quizzesData) {
+            const tbody = document.getElementById("quizInfoTbody");
+            tbody.innerHTML = ""
+            quizzesData.forEach(quiz => {
+                let tr = document.createElement("tr");
+                tr.className = "";
+                tr.id = `quiz-tr-${quiz.id}`;
+                answerA = `<td><a href="quizzes/answer/?quizId=${quiz.id}&answer=A" target="_blank" role="button"
+                                class="btn btn-primary m-1">Answer A</a></td>`
+                answerB = `<td><a href="quizzes/answer/?quizId=${quiz.id}&answer=B" target="_blank" role="button"
+                                class="btn btn-primary m-1">Answer B</a></td>`
+                answerC = `<td><a href="quizzes/answer/?quizId=${quiz.id}&answer=C" target="_blank" role="button"
+                                class="btn btn-primary m-1">Answer C</a></td>`
+                answerD = `<td><a href="quizzes/answer/?quizId=${quiz.id}&answer=D" target="_blank" role="button"
+                                class="btn btn-primary m-1">Answer D</a></td>`
+                tr.innerHTML = `<th class="quiz-th" scope="row">${quiz.id}</th><td>${quiz.answer}</td><td>${quiz.mode}</td><td>${quiz.state}</td>${answerA}${answerB}${answerC}${answerD}`;
+                tbody.appendChild(tr);
+            });
+        }
+        function renderTime(data) {
+            document.getElementById("startTime").innerText = data.startTime
+            document.getElementById("endTime").innerText = data.endTime
+            document.getElementById("remainingTime").innerText = data.remainingTime
+        }
         function renderData(data) {
-            _data = data
-            renderEnergycores(data.energycores)
-            renderTreasures(data.treasures)
-            // renderquizzes(data.quizzes)
+            _data = data // _data: golbal variable for debguing
+            if (data.isGameStarted == "False") {
+                console.log("game not started")
+            } else {
+                renderEnergycores(data.energycores, data.connectedEnergyCore)
+                renderTreasures(data.treasures)
+                renderQuizzes(data.quizzes)
+                renderTime(data)
+            }
         }
         async function main() {
             setInterval(async () => {
                 const data = await loadGameJSONData()
                 renderData(data)
-            }, 3000);
+            }, 1000);
         }
         main()
     </script>

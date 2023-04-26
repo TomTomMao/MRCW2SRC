@@ -90,7 +90,7 @@ try:
 except Exception as e:
     print(str(e))
     print("error: fail to read quiz file")
-
+BOMB_TIME_INSECOND: int = 30
 ENERGYCORE_COUNT = 7
 ENERGYCORE_CONFIG = [{'id': str(i)} for i in range(1, ENERGYCORE_COUNT)]
 GAME_CONFIG = {
@@ -117,7 +117,7 @@ GAME_CONFIG = {
         'attackTime': 30,
         # for random.choices()
         'treasure': {'types': ['shield', 'timeExpander', 'fixer', 'timeExpanderBomb'], 'weights': [6, 2, 1, 1], 'count': 20},
-        'timeLimit': timedelta(minutes=5),
+        'timeLimit': timedelta(minutes=0.5),
         'attackChanceCount': 50
     }
 }
@@ -172,9 +172,9 @@ class Game:
                             for energycoreConfig in ENERGYCORE_CONFIG]
 
         # initialize the startTime, endTime, and the timeLimit
-        self.startTime = datetime.now()
-        self.timeLimit = GAME_CONFIG[self.gameDifficulty]['timeLimit']
-        self.endTime = self.startTime + self.timeLimit
+        self.startTime:datetime = datetime.now()
+        self.timeLimit:int = GAME_CONFIG[self.gameDifficulty]['timeLimit'].seconds
+        self.endTime:datetime = self.startTime + timedelta(seconds=self.timeLimit)
 
         # Initialize the shieldCount, fixingMode, attackChanceCount, connectedCore, attackState
         self.shieldCount = 0
@@ -375,7 +375,11 @@ class Game:
 
         treasureObjects = self.getTreasures()
         treasuresDict = [treasure.toDictionary() for treasure in treasureObjects] #  a list of dictionary
-        
+        connectedCore: Union[Energycore, None] = self.getConnectedEnergycore()
+        if connectedCore != None: 
+            connectedCoreDict: Union[dict, None] = connectedCore.toDictionary()
+        else:
+            connectedCoreDict = None
         data = {
             "treasures": treasuresDict,
             "energycores": [energycore.toDictionary() for energycore in self.energycores],
@@ -388,9 +392,11 @@ class Game:
             "fixingMode": self.getFixingMode(),
             "gameDifficulty": self.gameDifficulty,
             "attackChanceCount": self.getAttackChanceCount(),
-            "connectedCore": self.getConnectedEnergycore(),
+            "connectedCore": connectedCoreDict,
             "attackState": self.getAttackState()
             }
+        # print(data)
+        # print(json.dumps(data, indent = 4))
         return json.dumps(data, indent = 4)
 
 
@@ -426,19 +432,36 @@ class Game:
         self.endTime = self.endTime - timedelta(seconds=timeToReduceInSecond)
         return self.getRemainingTimeLimit()
 
-    def expandTimeLimit(self, timeToExpendInSecond: int) -> int:
+    def expandTimeLimit(self, timeToExpandInSecond: int) -> int:
         """
             Assume the game is started
-            timeToExpendInSecond: an positive integer
+            timeToExpandInSecond: an positive integer
             Expand the time limit
             return the remaining time in seconds
         """
         assert self.isStart(), "game must be started"
-        if timeToExpendInSecond <= 0:
+        if timeToExpandInSecond <= 0:
             raise ValueError(
-                "timeToExpendInSecond must be an postivie integer")
-        self.timeLimit = self.timeLimit + timeToExpendInSecond
-        self.endTime = self.endTime + timedelta(seconds=timeToExpendInSecond)
+                "timeToExpandInSecond must be an postivie integer")
+        # print("self.timeLimit: ", type(self.timeLimit))
+        # print("timeToExpandInSecond: ", type(timeToExpandInSecond))
+        self.timeLimit = self.timeLimit + timeToExpandInSecond
+        self.endTime = self.endTime + timedelta(seconds=timeToExpandInSecond)
+        return self.getRemainingTimeLimit()
+
+    def reduceTimeLimit(self, timeToReduceInSecond: int) -> int:
+        """
+            Assume the game is started
+            timeToReduceInSecond: an positive integer
+            Reduce the time limit
+            return the remaining time in seconds
+        """
+        assert self.isStart(), "game must be started"
+        if timeToReduceInSecond <= 0:
+            raise ValueError(
+                "timeToReduceInSecond must be an postivie integer")
+        self.timeLimit = self.timeLimit - timeToReduceInSecond
+        self.endTime = self.endTime - timedelta(seconds=timeToReduceInSecond)
         return self.getRemainingTimeLimit()
 
     def connectEnergycore(self, energycore: Energycore) -> Energycore:
@@ -475,7 +498,7 @@ class Game:
         """
         assert treasure in self.getTreasures(), "treasure must be part of the game"
         print(treasure.toDictionary())
-        assert treasure.getState() != "collected", "treasure must be collected"
+        assert treasure.getState() == "collected", "treasure must be collected"
         assert treasure.getType() in VALID_TREASURE_TYPE, f"treasure has a wrong type:{treasure.getType()}"
         if treasure.getType() == "timeExpander":
             return True
@@ -523,15 +546,22 @@ class Game:
             self.expandTimeLimit(timeToExpandInSeconds)
             return True
         elif treasure.getType() == "shield":
-            timeToExpandInSeconds = GAME_CONFIG[self.gameDifficulty]['timeExpanderEffectInSeconds']
-            self.expandTimeLimit(timeToExpandInSeconds)
+            self.setShieldCount(self.getShieldCount()+1)
             return True
         elif treasure.getType() == "fixer":
-            timeToExpandInSeconds = GAME_CONFIG[self.gameDifficulty]['timeExpanderEffectInSeconds']
-            self.expandTimeLimit(timeToExpandInSeconds)
+            connectedEnergycore: Union[None, Energycore] = self.getConnectedEnergycore()
+            if connectedEnergycore == None:
+                for energycore in self.getEnergycores():
+                    if energycore.getState() == "unfixed":
+                        energycore.setState("fixed")
+                        self.disconnectedEnergycore()
+                        return True
+            else:
+                connectedEnergycore.setState("fixed")
+                self.disconnectedEnergycore() 
             return True
         elif treasure.getType() == "timeExpanderBomb":
-            # implement it later
+            self.reduceTimeLimit(BOMB_TIME_INSECOND)
             return True
         else:
             return False

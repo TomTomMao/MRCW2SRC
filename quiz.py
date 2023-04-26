@@ -45,6 +45,6 @@ class Quiz:
     
     def toDictionary(self) -> dict:
         """
-            Return a dictionary like this: {"id": "1", "answer": "A", "mode": "nonshed"}
+            Return a dictionary like this: {"id": "1", "answer": "A", "mode": "nonshed", "state": "answered"}
         """
-        return {"id": self.getId(), "answer": self.getAnswer(), "mode": self.getMode()}
+        return {"id": self.getId(), "answer": self.getAnswer(), "mode": self.getMode(), "state": self.getState()}
