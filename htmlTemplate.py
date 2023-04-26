@@ -71,7 +71,7 @@ FAILURE_ATTACK_TEMPLATE = """
         </title>
         </head>
         <body>
-            Faile to attack. Reason: {reason}
+            Fail to attack. Reason: {reason}
         </body>
     </html>
 """

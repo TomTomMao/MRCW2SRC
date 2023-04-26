@@ -348,7 +348,7 @@ class Game:
         """
         assert self.isStart(), "game must be started"
         if newShieldCount < 0:
-            raise ValueError("newShieldCount must be an positive integer")
+            raise ValueError(f"newShieldCount{newShieldCount} must be an positive integer")
         else:
             self.shieldCount = newShieldCount
             return self.shieldCount
@@ -393,7 +393,8 @@ class Game:
             "gameDifficulty": self.gameDifficulty,
             "attackChanceCount": self.getAttackChanceCount(),
             "connectedCore": connectedCoreDict,
-            "attackState": self.getAttackState()
+            "attackState": self.getAttackState(),
+            "isGameEnded": self.isEnded()
             }
         # print(data)
         # print(json.dumps(data, indent = 4))
@@ -529,6 +530,8 @@ class Game:
             If the game is ended, return True
             If the game is not ended, return False
         """
+        print("remaining time limit:", self.getRemainingTimeLimit())
+        print("self.getRemainingTimeLimit() <= 0", self.getRemainingTimeLimit() <= 0)
         return self.getRemainingTimeLimit() <= 0
 
     def applyTreasure(self, treasure: Treasure) -> bool:

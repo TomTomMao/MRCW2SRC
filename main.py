@@ -183,7 +183,7 @@ async def attack():
             reason="They used a shield"
             return FAILURE_ATTACK_TEMPLATE.format(reason=reason)
         else:
-            game.setShieldCount(game.getShieldCount() - 1)
+            # don't have shield
             game.setAttackChanceCount(game.getAttackChanceCount() - 1)
             game.setAttackState("attacked")
             game.reduceTime(-1) # use the value in the GAME_CONFIG

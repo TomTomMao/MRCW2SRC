@@ -12,7 +12,7 @@
 <body>
     <div class="container text-center information col p-3  mt-4">
         <!-- reference: https://getbootstrap.com/docs/5.3/layout/grid/ -->
-        <div class="grid api-calls">
+        <div class="grid start-game">
             <!-- reference for buttons: https://getbootstrap.com/docs/5.3/components/buttons/ -->
             <div class="row">
                 <div class="col"><a href="game/start/easy" target="_blank" role="button"
@@ -23,13 +23,51 @@
                         class="btn btn-primary m-1">start game (hard)</a></div>
             </div>
         </div>
+        <div class="col">
+            <table class="table" id="attributeTable">
+                <tr>
+                    <td>attack chance</td>
+                    <td id="attackChance"></td>
+                </tr>
+                <tr>
+                    <td>attack state</td>
+                    <td id="attackState"></td>
+                </tr>
+                <tr>
+                    <td>connected core</td>
+                    <td id="connectedCore"></td>
+                </tr>
+                <tr>
+                    <td>fixing mode</td>
+                    <td id="fixingMode"></td>
+                </tr>
+                <tr>
+                    <td>game difficulty</td>
+                    <td id="gameDifficulty"></td>
+                </tr>
+                <tr>
+                    <td>game start</td>
+                    <td id="isGameStarted"></td>
+                </tr>
+                <tr>
+                    <td>game end</td>
+                    <td id="isGameEnded"></td>
+                </tr>
+                <tr>
+                    <td>shield count</td>
+                    <td id="shieldCount"></td>
+                </tr>
+            </table>
+        </div>
         <div class="row p-2 border" id="timeInfo">
             <div class="col time" id="startTime">2023/4/26 11:40:00</div>
             <div class="col time" id="endTime">2023/4/26 11:50:00</div>
-            <div class="col time"><span id="remainingTimeTitle">Remaining Time:</span><span id="remainingTime"></span></div>
+            <div class="col time"><span id="remainingTimeTitle">Remaining Time:</span><span id="remainingTime"></span>
+            </div>
             <div class="col">
                 <a href="game/expand?timeInSecond=60" target="_blank" role="button" class="btn btn-primary m-1">expand
                     time</a>
+                <a href="attack" target="_blank" role="button" class="btn btn-danger m-1">attack</a>
                 <!-- button referencehttps://getbootstrap.com/docs/5.3/components/buttons/ -->
             </div>
         </div>
@@ -99,6 +137,17 @@
     </div>
     <script>
         let _data;
+        function renderAttribute(data) {
+            document.getElementById("attackChance").innerText=data.attackChanceCount;
+            document.getElementById("attackState").innerText=data.attackState;
+            document.getElementById("connectedCore").innerText=data.connectedCore == null ? "None" : data.connectedCore.id;
+            document.getElementById("fixingMode").innerText=data.fixingMode == null ? "None" : data.fixingMode;
+            document.getElementById("gameDifficulty").innerText=data.gameDifficulty;
+            document.getElementById("isGameStarted").innerText=data.isGameStarted;
+            document.getElementById("isGameEnded").innerText=data.isGameEnded;
+            document.getElementById("shieldCount").innerText=data.shieldCount;
+
+        }
         async function loadGameJSONData() {
             // reference: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
             const response = await fetch('game/info?json=1')
@@ -170,6 +219,7 @@
                 renderTreasures(data.treasures)
                 renderQuizzes(data.quizzes)
                 renderTime(data)
+                renderAttribute(data)
             }
         }
         async function main() {
