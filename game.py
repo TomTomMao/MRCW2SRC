@@ -381,8 +381,8 @@ class Game:
             "energycores": [energycore.toDictionary() for energycore in self.energycores],
             "quizzes": [quiz.toDictionary() for quiz in self.quizzes],
             "isGameStarted": self.isGameStarted,
-            "startTime": self.startTime,
-            "endTime": self.endTime,
+            "startTime": self.startTime.strftime("%m/%d/%Y, %H:%M:%S"), # reference : https://www.programiz.com/python-programming/datetime/strftime
+            "endTime": self.endTime.strftime("%m/%d/%Y, %H:%M:%S"),
             "remainingTime": self.getRemainingTimeLimit(),
             "shieldCount": self.getShieldCount(),
             "fixingMode": self.getFixingMode(),
@@ -474,6 +474,7 @@ class Game:
             If the game is not suitable to apply the treasure, return False.
         """
         assert treasure in self.getTreasures(), "treasure must be part of the game"
+        print(treasure.toDictionary())
         assert treasure.getState() != "collected", "treasure must be collected"
         assert treasure.getType() in VALID_TREASURE_TYPE, f"treasure has a wrong type:{treasure.getType()}"
         if treasure.getType() == "timeExpander":

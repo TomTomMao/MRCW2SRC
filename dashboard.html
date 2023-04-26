@@ -13,7 +13,28 @@
     <div class="container text-center information col p-3  mt-4">
         <!-- reference: https://getbootstrap.com/docs/5.3/layout/grid/ -->
         <div class="grid api-calls">
-            div
+            <!-- reference for buttons: https://getbootstrap.com/docs/5.3/components/buttons/ -->
+            <div class="row">
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+            </div>
+            <div class="row">
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+            </div>
+            <div class="row">
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+            </div>
+            <div class="row">
+                <div class="col"><a role="button" class="btn btn-primary m-1">button</a></div>
+                <div class="col"><a role="button" class="btn btn-primary m-1">expand time</a></div>
+                <div class="col"><a href="game/start/easy" target="_blank" role="button"
+                        class="btn btn-primary m-1">start game</a></div>
+            </div>
         </div>
         <div class="row p-2 border" id="timeInfo">
             <div class="col time" id="startTime">2023/4/26 11:40:00</div>
@@ -36,48 +57,25 @@
                     <h2>energy cores</h2>
                     <table class="table infotable" id="energycoreInfoTable">
                         <!-- https://getbootstrap.com/docs/5.3/content/tables/ -->
-                        <thead>
+                        <thead id="energycoreInfoThead">
                             <tr>
                                 <th scope="col">id</th>
                                 <th scope="col">state</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="" id="energycore-tr-template">
+                            <tr class="d-none" id="energycore-tr-template">
                                 <th class="energycore-th" scope="row">1</th>
-                                <td>unfixed</td>
-                            </tr>
-                            <tr class="" id="energycore-tr-template">
-                                <th class="energycore-th" scope="row">2</th>
-                                <td>unfixed</td>
-                            </tr>
-                            <tr class="" id="energycore-tr-template">
-                                <th class="energycore-th" scope="row">3</th>
-                                <td>unfixed</td>
-                            </tr>
-                            <tr class="" id="energycore-tr-template">
-                                <th class="energycore-th" scope="row">4</th>
-                                <td>unfixed</td>
-                            </tr>
-                            <tr class="" id="energycore-tr-template">
-                                <th class="energycore-th" scope="row">5</th>
-                                <td>unfixed</td>
-                            </tr>
-                            <tr class="" id="energycore-tr-template">
-                                <th class="energycore-th" scope="row">6</th>
-                                <td>unfixed</td>
-                            </tr>
-                            <tr class="" id="energycore-tr-template">
-                                <th class="energycore-th" scope="row">7</th>
-                                <td>unfixed</td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="row info" id="treasureInfo">
+                    <h2>treasure</h2>
                     <table class="table infotable" id="treasureInfoTable">
                         <!-- https://getbootstrap.com/docs/5.3/content/tables/ -->
-                        <thead>
+                        <thead id="treasureInfoThead">
                             <tr>
                                 <th scope="col">id</th>
                                 <th scope="col">state</th>
@@ -85,288 +83,52 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
-                            </tr>
-                            <tr class="" id="treasure-tr-template">
-                                <th scope="row">1</th>
-                                <td class="treasure-td-state">uncollected</td>
-                                <td class="treasure-td-type">timeExpander</td>
+                            <tr class="d-none" id="treasure-tr-template">
+                                <th class="treasure-th" scope="row">1</th>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
-                        <h2>Treasures</h2>
-                </div>
-                <div class="row info" id="quizInfo">
-                    <table class="table infotable" id="quizInfoTable">
-                        <!-- https://getbootstrap.com/docs/5.3/content/tables/ -->
-                        <h2>Quizzes</h2>
-                        <thead>
-                            <tr>
-                                <th scope="col">id</th>
-                                <th scope="col">answer</th>
-                                <th scope="col">mode</th>
-                                <th scope="col">state</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                            <tr class="" id="quiz-tr-template">
-                                <th scope="row">1</th>
-                                <td class="quiz-tr-answer">A</td>
-                                <td class="quiz-tr-mode">shed</td>
-                                <td class="quiz-tr-state">answered</td>
-                            </tr>
-                        </tbody>
-                        
+                    </table>
                 </div>
             </div>
         </div>
     </div>
     <script>
+        let _data;
         async function loadGameJSONData() {
             // reference: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
             const response = await fetch('game/info?json=1')
             const gameJSONData = await response.json();
-            return gameJSONData
+            return JSON.parse(gameJSONData)
+        }
+        function renderEnergycores(energycoresData) {
+            const thead = document.getElementById("energycoreInfoThead");
+            thead.innerHTML=""
+            energycoresData.forEach(energycore => {
+                let tr = document.createElement("tr");
+                tr.className="";
+                tr.id=`energycore-tr-${energycore.id}`;
+                tr.innerHTML=`<th class="energycore-th" scope="row">${energycore.id}</th><td>${energycore.state}</td>`;
+                thead.appendChild(tr);
+            });
+        }
+        function renderTreasures(treasuresData) {
+            const thead = document.getElementById("treasureInfoThead");
+            thead.innerHTML=""
+            treasuresData.forEach(treasure => {
+                let tr = document.createElement("tr");
+                tr.className="";
+                tr.id=`treasure-tr-${treasure.id}`;
+                tr.innerHTML=`<th class="treasure-th" scope="row">${treasure.id}</th><td>${treasure.state}</td><td>${treasure.type}</td>`;
+                thead.appendChild(tr);
+            });
         }
         function renderData(data) {
-            console.log(data)
+            _data = data
+            renderEnergycores(data.energycores)
+            renderTreasures(data.treasures)
+            // renderquizzes(data.quizzes)
         }
         async function main() {
             setInterval(async () => {
