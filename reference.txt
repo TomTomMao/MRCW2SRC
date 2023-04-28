@@ -1,0 +1,1 @@
+requirements.txt, and Procfile: https://tutlinks.com/create-and-deploy-fastapi-app-to-heroku/
