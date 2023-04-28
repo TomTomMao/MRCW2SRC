@@ -23,7 +23,7 @@
                         class="btn btn-primary m-1">start game (hard)</a></div>
             </div>
         </div>
-        <div class="col">
+        <div class="col" id="attributeContainer">
             <table class="table" id="attributeTable">
                 <tr>
                     <td>attack chance</td>
@@ -57,6 +57,10 @@
                     <td>shield count</td>
                     <td id="shieldCount"></td>
                 </tr>
+                <tr>
+                    <td>attack count for this fixing</td>
+                    <td id="attackCountForThisFixing"></td>
+                </tr>
             </table>
         </div>
         <div class="row p-2 border" id="timeInfo">
@@ -71,7 +75,7 @@
                 <!-- button referencehttps://getbootstrap.com/docs/5.3/components/buttons/ -->
             </div>
         </div>
-        <div class="row p-2 border mt-2">
+        <div class="row p-2 border mt-2" id="propertyContainer">
             <div class="col">
                 <div class="row info" id="energycoreInfo">
                     <h2>energy cores</h2>
@@ -146,6 +150,12 @@
             document.getElementById("isGameStarted").innerText=data.isGameStarted;
             document.getElementById("isGameEnded").innerText=data.isGameEnded;
             document.getElementById("shieldCount").innerText=data.shieldCount;
+            if (data.attackCountForThisFixing == null){
+                attackCountForThisFixing = 0
+            } else {
+                attackCountForThisFixing = data.attackCountForThisFixing
+            }
+            document.getElementById("attackCountForThisFixing").innerText=`${attackCountForThisFixing} of ${data.maxAttackCountForThisFixing}`;
 
         }
         async function loadGameJSONData() {
@@ -210,11 +220,20 @@
             document.getElementById("endTime").innerText = data.endTime
             document.getElementById("remainingTime").innerText = data.remainingTime
         }
+        function renderNotStart(data) {
+            document.getElementById("attributeContainer").style.display="none"
+            document.getElementById("timeInfo").style.display="none"
+            document.getElementById("propertyContainer").style.display="none"
+        }
         function renderData(data) {
             _data = data // _data: golbal variable for debguing
             if (data.isGameStarted == "False") {
                 console.log("game not started")
+                renderNotStart(data)
             } else {
+                document.getElementById("attributeContainer").style.display="block"
+                document.getElementById("timeInfo").style.display="block"
+                document.getElementById("propertyContainer").style.display="block"
                 renderEnergycores(data.energycores, data.connectedEnergyCore)
                 renderTreasures(data.treasures)
                 renderQuizzes(data.quizzes)

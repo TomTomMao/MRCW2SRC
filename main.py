@@ -10,7 +10,7 @@ from htmlTemplate import *
 GAME_NOT_RUNNING_ASSERTION_STRING="game is not running"
 
 app = FastAPI()
-game = Game()
+game: Game = Game()
 @app.get("/")
 async def root():
     return {"message": "hello world"}
@@ -99,8 +99,12 @@ async def connectEnergyCore(energycoreId: str, mode: str):
         # set the fixing mode
         game.setFixingMode(mode)
         if mode=="shed":
+            # set attack count for this fixing
+            game.setAttackCountForThisFixing(0)
             return ENERGY_CORE_CONNECT_SUCCESS_TEMPLATE_SHED.format(id=energycore.getId())
         elif mode=="nonshed":
+            # set attack count for this fixing
+            game.setAttackCountForThisFixing(0)            
             return ENERGY_CORE_CONNECT_SUCCESS_TEMPLATE_NONSHED.format(id=energycore.getId())
         else:
             return f"error: something went wrong, mode={mode}"
@@ -119,7 +123,9 @@ async def answerQuiz(quizId: str, answer: str):
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
     connectedEnergycore: Union[Energycore, None] = game.getConnectedEnergycore()
     quiz = game.getQuizById(quizId)
-    if connectedEnergycore == None: # b
+    if game.isEnded() == True:
+        return QUIZ_GAME_END_TEMPLATE
+    elif connectedEnergycore == None: # b
         return NO_CONNECTED_ENERGY_CORE_TEMPLATE
     elif quiz == None: # c
         return QUIZ_NOT_EXIST_TEMPLATE
@@ -128,11 +134,15 @@ async def answerQuiz(quizId: str, answer: str):
     elif quiz.getMode() != game.getFixingMode():# e
         return QUIZ_MODE_NOT_MATCH_TEMPLATE.format(quizMode = quiz.getMode(), fixingMode = game.getFixingMode())
     elif quiz.getAnswer() != answer: # f
+        # panelty
+        game.reduceTimeLimit(10)
         return QUIZ_WRONG_ANSWER_TEMPLATE
     else: # g : energycore connected, valid quiz, correct answer
         quiz.setState("answered")
         game.disconnectedEnergycore()
         connectedEnergycore.setState("fixed")
+        # set the fixing mode to be inactive once fixed the connected energy core
+        game.setFixingMode("inactive")
         game.setAttackState("notAttacked")
         if game.getAttackState() == "attacked": # snow monster manage to attack
             return renderSuccessAnswer(connectedEnergycore, game, attacked=True)
@@ -166,6 +176,7 @@ async def expandGame(timeInSecond: str):
 @app.get("/attack", response_class=HTMLResponse) # 9
 async def attack():
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
+    attackCountForThisFixing: Union[int, None] = game.getAttackCountForThisFixing()
     if game.getAttackChanceCount() == 0: # b
         return FAILURE_ATTACK_TEMPLATE.format(reason="You don't have any attack chance")
     elif game.getConnectedEnergycore() == None: # c1
@@ -175,6 +186,10 @@ async def attack():
     elif game.getFixingMode() == "shed": # c2
         game.setAttackChanceCount(game.getAttackChanceCount() - 1)
         reason="They are under the shed"
+        return FAILURE_ATTACK_TEMPLATE.format(reason=reason)
+    elif attackCountForThisFixing!=None and attackCountForThisFixing >= SINGLE_FIX_MAX_ATTACK:
+        # if it is greater than or equal to the max attack count for a single fix, return false attack
+        reason=f"You can't attack them for this quiz now"
         return FAILURE_ATTACK_TEMPLATE.format(reason=reason)
     elif game.getConnectedEnergycore() != None and game.getFixingMode() == "nonshed": # c3
         if game.getShieldCount() >= 1:
@@ -186,9 +201,15 @@ async def attack():
             # don't have shield
             game.setAttackChanceCount(game.getAttackChanceCount() - 1)
             game.setAttackState("attacked")
-            game.reduceTime(-1) # use the value in the GAME_CONFIG
+            game.reduceTime(-1) # -1 refers to use the value in the GAME_CONFIG
+            attackCountForThisFixing: Union[int, None] = game.getAttackCountForThisFixing()
+            if attackCountForThisFixing == None:
+                return ERROR_PAGE_TEMPLATE.format(errorMessage = "AttackCountForThisFixing is None")
+            else:
+                game.setAttackCountForThisFixing(attackCountForThisFixing + 1) # increment by 1
             return SUCCESS_ATTACK_TEMPLATE
-
+    else:
+        return ERROR_PAGE_TEMPLATE.format(errorMessage="something went wrong")
 
 
 @app.get("/game/info") # 10

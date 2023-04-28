@@ -1,0 +1,14 @@
+1. (Done) wrong answer should have panelty (tested)
+2. (Done)Once the connected core get fixed, the fixing mode should be set as inactive (tested)
+3. (Done)Should set a maximum number of attack for each fixing. (TESTED)
+    solution:
+    (done) add an attribute of game: game.attackCountForThisFixing: int
+    (done) if a player has connected to an energy core, set it to be 0
+    (done)if it is greater than SINGLE_FIX_MAX_ATTACK, return false attack.
+    (done)if the snow monster tried to attack, increment by 1.
+    (done)add these data into the dashboard page
+4. (Done) Should give the player rules: don't cheat (TESTED)
+5. (Done) When the game end, the energy core should not be able to fixed 
+6. (Done) if the game is not start, the dashboard should render the correct data (Tested)
+7. (Done) Add SINGLE_FIX_MAX_ATTACK into the dashboard (Test)
+8. More detail in the ENERGY_CORE_CONNECT_SUCCESS_TEMPLATE_NONSHED and ENERGY_CORE_CONNECT_SUCCESS_TEMPLATE_SHED

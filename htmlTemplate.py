@@ -10,7 +10,19 @@ NO_CONNECTED_ENERGY_CORE_TEMPLATE = f"""
         </body>
     </html>
 """
-
+QUIZ_GAME_END_TEMPLATE ="""
+<html>
+        <head>
+        <title>
+            Game Over
+        </title>
+        </head>
+        <body>
+            You can't fixing energy cores now. Because the game is over</b>
+            If you want to keep playing, click <a href="../../game/expand?timeInSecond=60" target="_blank" role="button" class="btn btn-primary m-1">expand time</a> to expand time
+        </body>
+    </html>
+"""
 QUIZ_NOT_EXIST_TEMPLATE = f"""
     <html>
         <head>
@@ -59,6 +71,7 @@ QUIZ_WRONG_ANSWER_TEMPLATE = """
         </head>
         <body>
             Your answer is incorrect.
+            The time limit is reduced.
         </body>
     </html>
 """
@@ -80,11 +93,25 @@ SUCCESS_ATTACK_TEMPLATE = """
     <html>
         <head>
         <title>
-            Fail to Attack
+            Success to Attack
         </title>
         </head>
         <body>
             Success to attack!
         </body>
     </html>
+"""
+
+ERROR_PAGE_TEMPLATE = """
+    <html>
+        <head>
+        <title>
+            Error
+        </title>
+        </head>
+        <body>
+            {errorMessage}
+        </body>
+    </html>
+    
 """

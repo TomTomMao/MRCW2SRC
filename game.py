@@ -82,7 +82,7 @@ VALID_DIFFICULTY = ("easy", "mid", "hard")
 VALID_FIXING_MODE = ("shed", "nonshed", "inactive")
 VALID_ATTACK_STATE = ("attacked", "notAttacked")
 VALID_WEATHER = ("rain", "notRain")
-
+SINGLE_FIX_MAX_ATTACK = 3
 
 # GAME CONFIGURE
 try:
@@ -137,6 +137,7 @@ class Game:
         self.attackChanceCount: int
         self.connectedCore: Union[Energycore, None]
         self.attackState: str
+        self.attackCountForThisFixing: Union[int, None]
         pass
 
     def initialise(self, difficulty: str):
@@ -148,7 +149,7 @@ class Game:
                             quizzes list, there will be a list of quizzes
                             energycores list, there will be a list of energycores
                 Initialize the startTime, endTime, and the timeLimit
-                Initialize the shieldCount, fixingMode, attackChanceCount, connectedCore
+                Initialize the shieldCount, fixingMode, attackChanceCount, connectedCore, attackCountForThisFixing
                 Set isGameStarted to be True
         """
 
@@ -176,12 +177,13 @@ class Game:
         self.timeLimit:int = GAME_CONFIG[self.gameDifficulty]['timeLimit'].seconds
         self.endTime:datetime = self.startTime + timedelta(seconds=self.timeLimit)
 
-        # Initialize the shieldCount, fixingMode, attackChanceCount, connectedCore, attackState
+        # Initialize the shieldCount, fixingMode, attackChanceCount, connectedCore, attackState, attackCountForThisFixing
         self.shieldCount = 0
         self.fixingMode = "inactive"
         self.attackChanceCount = GAME_CONFIG[self.gameDifficulty]['attackChanceCount']
         self.connectedCore = None
         self.attackState = "notAttacked"
+        self.attackCountForThisFixing = None
 
         # set game state
         self.isGameStarted = True
@@ -275,12 +277,8 @@ class Game:
             Return None if there is no connected energycore
         """
         assert self.isStart(), "game must be started"
-        if self.fixingMode == "shed":
-            return "shed"
-        elif self.fixingMode == "nonshed":
-            return "nonshed"
-        else:
-            return None
+        assert self.fixingMode in VALID_FIXING_MODE, f"invalid fixingmode attribute: {self.fixingMode}"
+        return self.fixingMode
 
     def getAttackState(self) -> str:
         """
@@ -370,7 +368,7 @@ class Game:
         """
         
         if self.isStart() == False:
-            print(json.dumps({"isGameStarted": "False"}))
+            # print(json.dumps({"isGameStarted": "False"}))
             return json.dumps({"isGameStarted": "False"})
 
         treasureObjects = self.getTreasures()
@@ -394,7 +392,9 @@ class Game:
             "attackChanceCount": self.getAttackChanceCount(),
             "connectedCore": connectedCoreDict,
             "attackState": self.getAttackState(),
-            "isGameEnded": self.isEnded()
+            "isGameEnded": self.isEnded(),
+            "attackCountForThisFixing": self.getAttackCountForThisFixing(),
+            "maxAttackCountForThisFixing": SINGLE_FIX_MAX_ATTACK
             }
         # print(data)
         # print(json.dumps(data, indent = 4))
@@ -414,6 +414,21 @@ class Game:
         else:
             delta: timedelta = datetime.now() - self.endTime
             return -delta.seconds
+
+    def getAttackCountForThisFixing(self) -> Union[int, None]:
+        """
+            return None if there is no energy core that has been connected in this game
+            return the count of attack made made by the snow monster for this connected energy core
+        """
+        return self.attackCountForThisFixing
+    
+    def setAttackCountForThisFixing(self, newCount) -> int:
+        """
+            set the the count of attack made made by the snow monster for this connected energy core
+            return the new count
+        """
+        self.attackCountForThisFixing = newCount
+        return self.attackCountForThisFixing
 
     def reduceTime(self, timeToReduceInSecond: int = -1) -> int:
         """
