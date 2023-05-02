@@ -1,0 +1,197 @@
+behaviour,artcode,url
+answer quiz 1 A,11111,/quizzes/answer/?quizId=1&answer=A
+answer quiz 1 B,11112,/quizzes/answer/?quizId=1&answer=B
+answer quiz 1 C,11113,/quizzes/answer/?quizId=1&answer=C
+answer quiz 1 D,11114,/quizzes/answer/?quizId=1&answer=D
+answer quiz 2 A,11115,/quizzes/answer/?quizId=2&answer=A
+answer quiz 2 B,11116,/quizzes/answer/?quizId=2&answer=B
+answer quiz 2 C,11122,/quizzes/answer/?quizId=2&answer=C
+answer quiz 2 D,11123,/quizzes/answer/?quizId=2&answer=D
+answer quiz 3 A,11124,/quizzes/answer/?quizId=3&answer=A
+answer quiz 3 B,11125,/quizzes/answer/?quizId=3&answer=B
+answer quiz 3 C,11126,/quizzes/answer/?quizId=3&answer=C
+answer quiz 3 D,11133,/quizzes/answer/?quizId=3&answer=D
+answer quiz 4 A,11134,/quizzes/answer/?quizId=4&answer=A
+answer quiz 4 B,11135,/quizzes/answer/?quizId=4&answer=B
+answer quiz 4 C,11136,/quizzes/answer/?quizId=4&answer=C
+answer quiz 4 D,11144,/quizzes/answer/?quizId=4&answer=D
+answer quiz 5 A,11145,/quizzes/answer/?quizId=5&answer=A
+answer quiz 5 B,11146,/quizzes/answer/?quizId=5&answer=B
+answer quiz 5 C,11155,/quizzes/answer/?quizId=5&answer=C
+answer quiz 5 D,11156,/quizzes/answer/?quizId=5&answer=D
+answer quiz 6 A,11166,/quizzes/answer/?quizId=6&answer=A
+answer quiz 6 B,11222,/quizzes/answer/?quizId=6&answer=B
+answer quiz 6 C,11223,/quizzes/answer/?quizId=6&answer=C
+answer quiz 6 D,11224,/quizzes/answer/?quizId=6&answer=D
+answer quiz 7 A,11225,/quizzes/answer/?quizId=7&answer=A
+answer quiz 7 B,11226,/quizzes/answer/?quizId=7&answer=B
+answer quiz 7 C,11233,/quizzes/answer/?quizId=7&answer=C
+answer quiz 7 D,11234,/quizzes/answer/?quizId=7&answer=D
+answer quiz 8 A,11235,/quizzes/answer/?quizId=8&answer=A
+answer quiz 8 B,11236,/quizzes/answer/?quizId=8&answer=B
+answer quiz 8 C,11244,/quizzes/answer/?quizId=8&answer=C
+answer quiz 8 D,11245,/quizzes/answer/?quizId=8&answer=D
+answer quiz 9 A,11246,/quizzes/answer/?quizId=9&answer=A
+answer quiz 9 B,11255,/quizzes/answer/?quizId=9&answer=B
+answer quiz 9 C,11256,/quizzes/answer/?quizId=9&answer=C
+answer quiz 9 D,11266,/quizzes/answer/?quizId=9&answer=D
+answer quiz 10 A,11333,/quizzes/answer/?quizId=10&answer=A
+answer quiz 10 B,11334,/quizzes/answer/?quizId=10&answer=B
+answer quiz 10 C,11335,/quizzes/answer/?quizId=10&answer=C
+answer quiz 10 D,11336,/quizzes/answer/?quizId=10&answer=D
+answer quiz 11 A,11344,/quizzes/answer/?quizId=11&answer=A
+answer quiz 11 B,11345,/quizzes/answer/?quizId=11&answer=B
+answer quiz 11 C,11346,/quizzes/answer/?quizId=11&answer=C
+answer quiz 11 D,11355,/quizzes/answer/?quizId=11&answer=D
+answer quiz 12 A,11356,/quizzes/answer/?quizId=12&answer=A
+answer quiz 12 B,11366,/quizzes/answer/?quizId=12&answer=B
+answer quiz 12 C,11444,/quizzes/answer/?quizId=12&answer=C
+answer quiz 12 D,11445,/quizzes/answer/?quizId=12&answer=D
+answer quiz 13 A,11446,/quizzes/answer/?quizId=13&answer=A
+answer quiz 13 B,11455,/quizzes/answer/?quizId=13&answer=B
+answer quiz 13 C,11456,/quizzes/answer/?quizId=13&answer=C
+answer quiz 13 D,11466,/quizzes/answer/?quizId=13&answer=D
+answer quiz 14 A,11555,/quizzes/answer/?quizId=14&answer=A
+answer quiz 14 B,11556,/quizzes/answer/?quizId=14&answer=B
+answer quiz 14 C,11566,/quizzes/answer/?quizId=14&answer=C
+answer quiz 14 D,11666,/quizzes/answer/?quizId=14&answer=D
+answer quiz 15 A,12222,/quizzes/answer/?quizId=15&answer=A
+answer quiz 15 B,12223,/quizzes/answer/?quizId=15&answer=B
+answer quiz 15 C,12224,/quizzes/answer/?quizId=15&answer=C
+answer quiz 15 D,12225,/quizzes/answer/?quizId=15&answer=D
+answer quiz 16 A,12226,/quizzes/answer/?quizId=16&answer=A
+answer quiz 16 B,12233,/quizzes/answer/?quizId=16&answer=B
+answer quiz 16 C,12234,/quizzes/answer/?quizId=16&answer=C
+answer quiz 16 D,12235,/quizzes/answer/?quizId=16&answer=D
+answer quiz 17 A,12236,/quizzes/answer/?quizId=17&answer=A
+answer quiz 17 B,12244,/quizzes/answer/?quizId=17&answer=B
+answer quiz 17 C,12245,/quizzes/answer/?quizId=17&answer=C
+answer quiz 17 D,12246,/quizzes/answer/?quizId=17&answer=D
+answer quiz 18 A,12255,/quizzes/answer/?quizId=18&answer=A
+answer quiz 18 B,12256,/quizzes/answer/?quizId=18&answer=B
+answer quiz 18 C,12266,/quizzes/answer/?quizId=18&answer=C
+answer quiz 18 D,12333,/quizzes/answer/?quizId=18&answer=D
+answer quiz 19 A,12334,/quizzes/answer/?quizId=19&answer=A
+answer quiz 19 B,12335,/quizzes/answer/?quizId=19&answer=B
+answer quiz 19 C,12336,/quizzes/answer/?quizId=19&answer=C
+answer quiz 19 D,12344,/quizzes/answer/?quizId=19&answer=D
+answer quiz 20 A,12345,/quizzes/answer/?quizId=20&answer=A
+answer quiz 20 B,12346,/quizzes/answer/?quizId=20&answer=B
+answer quiz 20 C,12355,/quizzes/answer/?quizId=20&answer=C
+answer quiz 20 D,12356,/quizzes/answer/?quizId=20&answer=D
+answer quiz 21 A,12366,/quizzes/answer/?quizId=21&answer=A
+answer quiz 21 B,12444,/quizzes/answer/?quizId=21&answer=B
+answer quiz 21 C,12445,/quizzes/answer/?quizId=21&answer=C
+answer quiz 21 D,12446,/quizzes/answer/?quizId=21&answer=D
+answer quiz 22 A,12455,/quizzes/answer/?quizId=22&answer=A
+answer quiz 22 B,12456,/quizzes/answer/?quizId=22&answer=B
+answer quiz 22 C,12466,/quizzes/answer/?quizId=22&answer=C
+answer quiz 22 D,12555,/quizzes/answer/?quizId=22&answer=D
+answer quiz 23 A,12556,/quizzes/answer/?quizId=23&answer=A
+answer quiz 23 B,12566,/quizzes/answer/?quizId=23&answer=B
+answer quiz 23 C,12666,/quizzes/answer/?quizId=23&answer=C
+answer quiz 23 D,13333,/quizzes/answer/?quizId=23&answer=D
+answer quiz 24 A,13334,/quizzes/answer/?quizId=24&answer=A
+answer quiz 24 B,13335,/quizzes/answer/?quizId=24&answer=B
+answer quiz 24 C,13336,/quizzes/answer/?quizId=24&answer=C
+answer quiz 24 D,13344,/quizzes/answer/?quizId=24&answer=D
+answer quiz 25 A,13345,/quizzes/answer/?quizId=25&answer=A
+answer quiz 25 B,13346,/quizzes/answer/?quizId=25&answer=B
+answer quiz 25 C,13355,/quizzes/answer/?quizId=25&answer=C
+answer quiz 25 D,13356,/quizzes/answer/?quizId=25&answer=D
+answer quiz 26 A,13366,/quizzes/answer/?quizId=26&answer=A
+answer quiz 26 B,13444,/quizzes/answer/?quizId=26&answer=B
+answer quiz 26 C,13445,/quizzes/answer/?quizId=26&answer=C
+answer quiz 26 D,13446,/quizzes/answer/?quizId=26&answer=D
+answer quiz 27 A,13455,/quizzes/answer/?quizId=27&answer=A
+answer quiz 27 B,13456,/quizzes/answer/?quizId=27&answer=B
+answer quiz 27 C,13466,/quizzes/answer/?quizId=27&answer=C
+answer quiz 27 D,13555,/quizzes/answer/?quizId=27&answer=D
+answer quiz 28 A,13556,/quizzes/answer/?quizId=28&answer=A
+answer quiz 28 B,13566,/quizzes/answer/?quizId=28&answer=B
+answer quiz 28 C,13666,/quizzes/answer/?quizId=28&answer=C
+answer quiz 28 D,14444,/quizzes/answer/?quizId=28&answer=D
+answer quiz 29 A,14445,/quizzes/answer/?quizId=29&answer=A
+answer quiz 29 B,14446,/quizzes/answer/?quizId=29&answer=B
+answer quiz 29 C,14455,/quizzes/answer/?quizId=29&answer=C
+answer quiz 29 D,14456,/quizzes/answer/?quizId=29&answer=D
+answer quiz 30 A,14466,/quizzes/answer/?quizId=30&answer=A
+answer quiz 30 B,14555,/quizzes/answer/?quizId=30&answer=B
+answer quiz 30 C,14556,/quizzes/answer/?quizId=30&answer=C
+answer quiz 30 D,14566,/quizzes/answer/?quizId=30&answer=D
+collect treasure 0,14666,/treasures/collect/0
+collect treasure 1,15555,/treasures/collect/1
+collect treasure 2,15556,/treasures/collect/2
+collect treasure 3,15566,/treasures/collect/3
+collect treasure 4,15666,/treasures/collect/4
+collect treasure 5,16666,/treasures/collect/5
+collect treasure 6,22222,/treasures/collect/6
+collect treasure 7,22223,/treasures/collect/7
+collect treasure 8,22224,/treasures/collect/8
+collect treasure 9,22225,/treasures/collect/9
+collect treasure 10,22226,/treasures/collect/10
+collect treasure 11,22233,/treasures/collect/11
+collect treasure 12,22234,/treasures/collect/12
+collect treasure 13,22235,/treasures/collect/13
+collect treasure 14,22236,/treasures/collect/14
+collect treasure 15,22244,/treasures/collect/15
+collect treasure 16,22245,/treasures/collect/16
+collect treasure 17,22246,/treasures/collect/17
+collect treasure 18,22255,/treasures/collect/18
+collect treasure 19,22256,/treasures/collect/19
+use treasure 0,22266,/treasures/use/0
+use treasure 1,22333,/treasures/use/1
+use treasure 2,22334,/treasures/use/2
+use treasure 3,22335,/treasures/use/3
+use treasure 4,22336,/treasures/use/4
+use treasure 5,22344,/treasures/use/5
+use treasure 6,22345,/treasures/use/6
+use treasure 7,22346,/treasures/use/7
+use treasure 8,22355,/treasures/use/8
+use treasure 9,22356,/treasures/use/9
+use treasure 10,22366,/treasures/use/10
+use treasure 11,22444,/treasures/use/11
+use treasure 12,22445,/treasures/use/12
+use treasure 13,22446,/treasures/use/13
+use treasure 14,22455,/treasures/use/14
+use treasure 15,22456,/treasures/use/15
+use treasure 16,22466,/treasures/use/16
+use treasure 17,22555,/treasures/use/17
+use treasure 18,22556,/treasures/use/18
+use treasure 19,22566,/treasures/use/19
+connect core 1 shed,22666,/enrgycores/connect/?energycoreId=1&mode=shed
+connect core 2 shed,23333,/enrgycores/connect/?energycoreId=2&mode=shed
+connect core 3 shed,23334,/enrgycores/connect/?energycoreId=3&mode=shed
+connect core 4 shed,23335,/enrgycores/connect/?energycoreId=4&mode=shed
+connect core 5 shed,23336,/enrgycores/connect/?energycoreId=5&mode=shed
+connect core 6 shed,23344,/enrgycores/connect/?energycoreId=6&mode=shed
+connect core 7 shed,23345,/enrgycores/connect/?energycoreId=7&mode=shed
+connect core 1 nonshed,23346,/enrgycores/connect/?energycoreId=1&mode=nonshed
+connect core 2 nonshed,23355,/enrgycores/connect/?energycoreId=2&mode=nonshed
+connect core 3 nonshed,23356,/enrgycores/connect/?energycoreId=3&mode=nonshed
+connect core 4 nonshed,23366,/enrgycores/connect/?energycoreId=4&mode=nonshed
+connect core 5 nonshed,23444,/enrgycores/connect/?energycoreId=5&mode=nonshed
+connect core 6 nonshed,23445,/enrgycores/connect/?energycoreId=6&mode=nonshed
+connect core 7 nonshed,23446,/enrgycores/connect/?energycoreId=7&mode=nonshed
+show player treasure,23455,/treasures/my
+start easy game sunny,23456,/game/start/easy/sunny
+start easy game cloudy,23466,/game/start/easy/cloudy
+start easy game rainy,23555,/game/start/easy/rainy
+start mid game sunny,23556,/game/start/mid/sunny
+start mid game cloudy,23566,/game/start/mid/cloudy
+start mid game rainy,23666,/game/start/mid/rainy
+start hard game sunny,24444,/game/start/hard/sunny
+start hard game cloudy,24445,/game/start/hard/cloudy
+start hard game rainy,24446,/game/start/hard/rainy
+expand time 15 s,24455,/game/expand/?timeInSecond=15
+expand time 30 s,24456,/game/expand/?timeInSecond=30
+expand time 45 s,24466,/game/expand/?timeInSecond=45
+expand time 60 s,24555,/game/expand/?timeInSecond=60
+expand time 90 s,24556,/game/expand/?timeInSecond=90
+expand time 120 s,24566,/game/expand/?timeInSecond=120
+snowmonster attack,24666,/attack
+show hint,25555,/hints
+show dashboard,25556,/dashboard
+,25566,
+,25666,
+,26666,
