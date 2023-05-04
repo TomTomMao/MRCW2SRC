@@ -145,10 +145,11 @@ async def answerQuiz(quizId: str, answer: str):
         connectedEnergycore.setState("fixed")
         # set the fixing mode to be inactive once fixed the connected energy core
         game.setFixingMode("inactive")
-        game.setAttackState("notAttacked")
         if game.getAttackState() == "attacked": # snow monster manage to attack
+            game.setAttackState("notAttacked")
             return renderSuccessAnswer(connectedEnergycore, game, attacked=True)
         elif game.getAttackState() == "notAttacked": # snow monster not manage to attack
+            game.setAttackState("notAttacked")
             return renderSuccessAnswer(connectedEnergycore, game, attacked=False)
 
 @app.get("/hints", response_class=HTMLResponse) # 6
@@ -240,7 +241,7 @@ def renderSuccessAnswer(connectedEnergycore: Energycore, game: Game, attacked: b
         energycoresListHTML += "</li>"
     energycoresListHTML += "</ul>"
     if attacked:
-        attackedPHTML = """<p stype="{{colour: red}}">The snow monster attacked you when you fixing the energy core</p>"""
+        attackedPHTML = """<h2 style="color: red">The snow monster attacked you when you fixing the energy core</h2><p>Next time, connect to the quiz under the shed, which can protect you.</p>"""
     else:
         attackedPHTML = ""
     return """
@@ -253,7 +254,7 @@ def renderSuccessAnswer(connectedEnergycore: Energycore, game: Game, attacked: b
                 <body>
                     <h1>You have successfuly fixed the energy core {energycoreId}</h1>
                     {attacked}
-                    <p>time remaining: {timeLimit}</p>
+                    <p>time remaining: {timeLimit} seconds</p>
                     <h2>Energy cores:</h2>
                         {cores}
                 </body>
