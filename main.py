@@ -74,6 +74,8 @@ async def showTreasures():
     assert gameIsRunning, GAME_NOT_RUNNING_ASSERTION_STRING
     page = MY_TREASURES_TEMPLATE_HEAD
     treasures = game.getTreasures()
+    if len(treasures) == 0:
+        return page + "You don't have any treasure" + MY_TREASURES_TEMPLATE_TAIL
     for treasure in treasures:
         if treasure.getState() == "collected":
             page += MY_COLLECTED_TREASURE_ITEM_TEMPLATE.format(id=treasure.getId(), treasureType=treasure.getType())

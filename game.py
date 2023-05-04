@@ -92,7 +92,7 @@ except Exception as e:
     print("error: fail to read quiz file")
 BOMB_TIME_INSECOND: int = 30
 ENERGYCORE_COUNT = 7
-ENERGYCORE_CONFIG = [{'id': str(i)} for i in range(1, ENERGYCORE_COUNT)]
+ENERGYCORE_CONFIG = [{'id': str(i)} for i in range(1, ENERGYCORE_COUNT + 1)]
 GAME_CONFIG = {
     'easy': {
         'timeExpanderEffectInSeconds': 15,
